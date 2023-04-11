@@ -1,0 +1,20 @@
+.container{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border: solid 2px rgb(43, 40, 40);
+}
+
+.button {
+    border: none;
+    background-color: bisque;
+    padding: 7px 25px;
+    margin-top: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    cursor: pointer;
+}
