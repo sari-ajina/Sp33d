@@ -10,6 +10,7 @@ function Register() {
     const [emailReg, setEmailReg] = useState("");
     const [firstNameReg, setFirstNameReg] = useState("");
     const [lastNameReg, setLastNameReg] = useState("");
+    const [registered, setRegistered] = useState(false);
     const navigate = useNavigate();
 
     //calls a axios post method that pushes data to the server side
@@ -27,6 +28,18 @@ function Register() {
         }
     }
 
+    const handleLinkClick = (event) => {
+        if(usernameReg != null && passwordReg != null && 
+            passwordConf == passwordReg && emailReg != null && 
+            firstNameReg != null && lastNameReg != null){
+                setRegistered(true)
+        }
+        if (!registered) {
+            event.preventDefault(); // stop navigation to /login page
+            alert('Please fill out all fields of registration first.');
+        }
+    }
+
     return (
     <div>
         <div className="container">
@@ -41,6 +54,7 @@ function Register() {
                     onChange={((e)=>
                         {setFirstNameReg(e.target.value)}
                     )}
+                    required
                 >
                 </input>
                 <br/>
@@ -50,6 +64,7 @@ function Register() {
                     onChange={((e)=>
                         {setLastNameReg(e.target.value)}
                     )}
+                    required
                 >
                 </input>
             </div>
@@ -61,6 +76,7 @@ function Register() {
                     onChange={((e)=>
                         {setUsernameReg(e.target.value)}
                     )}
+                    required
                 >
                 </input>
             </div>
@@ -72,6 +88,7 @@ function Register() {
                     onChange={((e)=>
                         {setEmailReg(e.target.value)}
                     )}
+                    required
                 >
                 </input>
             </div>
@@ -83,6 +100,7 @@ function Register() {
                     onChange={((e)=>
                         {setPasswordReg(e.target.value)}
                     )}
+                    required
                 >
                 </input>
             </div>
@@ -94,10 +112,11 @@ function Register() {
                     onChange={((e)=>
                         {setPasswordConf(e.target.value)}
                     )}
+                    required
                 >
                 </input>
             </div>
-            <Link to='/login'>
+            <Link to='/login' onClick={handleLinkClick}>
                 <button className={"button"} onClick={register}>Continue</button>
                 <br/>
                 <a>Already have an Account? Login!</a>

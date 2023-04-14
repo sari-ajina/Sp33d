@@ -10,6 +10,8 @@ function Login() {
     
     const [loginStatus, setLoginStatus] = useState("");
 
+    const [logged, setLogged] = useState(false);
+
     //calls an axios post method to send data to the server side
     const login = ()=>{
         Axios.post('http://localhost:3001/login', 
@@ -21,9 +23,18 @@ function Login() {
                 if(response.data.message){
                     setLoginStatus(response.data.message)
                 }else{
-                    setLoginStatus("logged in as " + response.data[0].result)
+                    setLogged(true)
+                    console.log("logged in as " + response.data.result)
+                    // setLoginStatus("logged in as " + response.data.result)
                 }
         });
+    }
+
+    const handleLinkClick = (event) => {
+        if (!logged) {
+            event.preventDefault(); // stop navigation to /homepage page
+            // alert('Please Enter an Existing Username and Password');
+        }
     }
 
     return (
@@ -52,7 +63,7 @@ function Login() {
                     }}
                 ></input>
             </div>
-            <Link to='/homepage'>
+            <Link to='/homepage' onClick={handleLinkClick}>
                 <button className="button" onClick={login}>Login</button>
             </Link>
             <div>
