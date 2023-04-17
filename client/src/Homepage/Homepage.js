@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Homepage.css';
 import Axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import SearchBar from '../components/SearchBar/SearchBar';
 
 function Homepage() {
     const [tableName, setTableName] = useState("");
@@ -35,6 +36,7 @@ function Homepage() {
             }}>
         </input> */}
         {/* <button className='button' onClick={initialize}>Initialize Database</button> */}
+        <SearchBar/>
         <Link to='/items'>
             <button>Add an Item</button>
         </Link>

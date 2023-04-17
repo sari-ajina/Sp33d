@@ -114,20 +114,69 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/homepage', (req, res) => {
-    const tableName = req.body.tableName;
-    console.log("this is tableName ", tableName)
+    // const tableName = req.body.tableName;
+    // console.log("this is tableName ", tableName)
 
-    db.query
-    (`CREATE TABLE ${tableName} (id INT(50) UNSIGNED AUTO_INCREMENT PRIMARY KEY);`,
-        (err, result) => {
-            if (err) {
-                console.log(err);
-                res.status(500).json({ error: 'An error occurred while creating a table' });
-            } else {
-                res.status(200).json({ message: 'Table Created Successfully!' });
-            }
+    // db.query
+    // (`CREATE TABLE ${tableName} (id INT(50) UNSIGNED AUTO_INCREMENT PRIMARY KEY);`,
+    //     (err, result) => {
+    //         if (err) {
+    //             console.log(err);
+    //             res.status(500).json({ error: 'An error occurred while creating a table' });
+    //         } else {
+    //             res.status(200).json({ message: 'Table Created Successfully!' });
+    //         }
+    //     }
+    // )
+
+    const category = req.body.category
+    db.query(`SELECT title, description, category, price, created_at, user_id FROM items WHERE category= '${category}'`,
+        (err, results) => {
+            if(err) throw err;
+
+            res.send({message: "Searched"})
         }
     )
+});
+
+// app.get('/searchedItem', (req, res) => {
+//     const category = req.body.category
+//     db.query(`SELECT title, description, category, price, created_at, user_id FROM items WHERE category= '${category}`, (error, results) => {
+//         if (error) {
+//             console.error(error);
+//             res.status(500).send('Server error');
+//         } else {
+//             res.send(results);
+//         }
+//     });
+// });
+
+app.get('/homepage', (req, res) => {
+    const category = req.query.category
+    console.log("category: ", category)
+    db.query(`SELECT title, description, category, price, created_at, user_id FROM items WHERE category= '${category}'`, (error, results) => {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Server error');
+        } else {
+            res.send({message: "Searched"});
+            // console.log(results)
+        }
+    });
+});
+
+app.get('/searchedItem', (req, res) => {
+    const category = req.query.category
+    console.log("category: ", category)
+    db.query(`SELECT title, description, category, price, created_at, user_id FROM items WHERE category= '${category}'`, (error, results) => {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Server error');
+        } else {
+            res.send({message: "Searched", data: results});
+            console.log(results)
+        }
+    });
 });
 
 // Route for creating a new item
