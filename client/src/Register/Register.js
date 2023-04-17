@@ -119,6 +119,8 @@ function Register() {
             <Link to='/login' onClick={handleLinkClick}>
                 <button className={"button"} onClick={register}>Continue</button>
                 <br/>
+            </Link>
+            <Link to='/login'>
                 <a>Already have an Account? Login!</a>
             </Link>
         </div>

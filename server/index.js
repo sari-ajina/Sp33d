@@ -130,6 +130,47 @@ app.post('/homepage', (req, res) => {
     )
 });
 
+// Route for creating a new item
+app.post('/items', (req, res) => {
+    const title = req.body.title;
+    const description = req.body.description;
+    const category = req.body.category;
+    const price = req.body.price;
+    const userId = req.body.userId;
+
+    console.log('userId:', userId);
+    
+    // Check if the user has already posted 3 items today
+    const today = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).slice(0.10);
+    const formattedDate = new Date(today).toISOString().slice(0, 10);
+
+    db.query(`SELECT COUNT(*) AS count FROM items WHERE user_id = ? AND DATE(created_at) = ?`, [userId, formattedDate],
+    (err, results) => {
+        if (err) throw err;
+        console.log("date: ", formattedDate)
+        console.log("results: ", results[0].count)
+        if (results[0].count >= 3) {
+            console.log("count is maxed for user today")
+            return res.send({message: 'you have already posted 3 items today'});
+        }
+
+        // Insert the new item into the database
+        const newItem = {
+            title,
+            description,
+            category,
+            price,
+            user_id: userId,
+        };
+        
+        db.query('INSERT INTO items SET ?', newItem, (err, results) => {
+            if (err) throw err;
+
+            res.send(`Item ${results.insertId} created`);
+        });
+    });
+});
+
 const PORT = process.env.PORT || 3001; 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 
   

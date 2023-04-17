@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './Login.css';
 import Axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import UserContext from '../Contexts/UserContext';
 
 function Login() {
-    const [username, setUsername] = useState("");
+    const [usernameInput, setUsernameInput] = useState("");
     const [password, setPassword] = useState("");
+    const {setUsername} = useContext(UserContext);
+
     const navigate = useNavigate();
     
     const [loginStatus, setLoginStatus] = useState("");
@@ -15,17 +18,20 @@ function Login() {
     //calls an axios post method to send data to the server side
     const login = ()=>{
         Axios.post('http://localhost:3001/login', 
-        {username: username, password: password}).then(
+        {username: usernameInput, password: password}).then(
             (response) =>{
                 console.log(response)
                 //checks if the data contains a message that we post from the server side is an error message
                 //if it is, it will post the error message, if not it will post the username 
                 if(response.data.message){
                     setLoginStatus(response.data.message)
+
                 }else{
                     setLogged(true)
                     console.log("logged in as " + response.data.result)
                     // setLoginStatus("logged in as " + response.data.result)
+                    //set the usernamem val in the UserContext
+                    setUsername(usernameInput);
                 }
         });
     }
@@ -49,7 +55,7 @@ function Login() {
                     placeholder='enter username'
                     type="text"
                     onChange={(e)=>{
-                        setUsername(e.target.value)
+                        setUsernameInput(e.target.value)
                     }}
                 ></input>
             </div>
