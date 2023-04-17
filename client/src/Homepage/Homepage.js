@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Homepage.css';
 import Axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Homepage() {
     const [tableName, setTableName] = useState("");
@@ -34,10 +35,6 @@ function Homepage() {
             }}>
         </input> */}
         {/* <button className='button' onClick={initialize}>Initialize Database</button> */}
-        <form onSubmit={handleSearch}>
-            <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-            <button type="submit">Search</button>
-      </form>
         <Link to='/items'>
             <button>Add an Item</button>
         </Link>
