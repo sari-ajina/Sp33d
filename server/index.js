@@ -139,21 +139,9 @@ app.post('/homepage', (req, res) => {
     )
 });
 
-// app.get('/searchedItem', (req, res) => {
-//     const category = req.body.category
-//     db.query(`SELECT title, description, category, price, created_at, user_id FROM items WHERE category= '${category}`, (error, results) => {
-//         if (error) {
-//             console.error(error);
-//             res.status(500).send('Server error');
-//         } else {
-//             res.send(results);
-//         }
-//     });
-// });
-
 app.get('/homepage', (req, res) => {
     const category = req.query.category
-    console.log("category: ", category)
+    // console.log("category: ", category)
     db.query(`SELECT title, description, category, price, created_at, user_id FROM items WHERE category= '${category}'`, (error, results) => {
         if (error) {
             console.error(error);
@@ -165,19 +153,112 @@ app.get('/homepage', (req, res) => {
     });
 });
 
+//search page
 app.get('/searchedItem', (req, res) => {
     const category = req.query.category
-    console.log("category: ", category)
+    // console.log("category: ", category)
     db.query(`SELECT title, description, category, price, created_at, user_id FROM items WHERE category= '${category}'`, (error, results) => {
         if (error) {
             console.error(error);
             res.status(500).send('Server error');
         } else {
             res.send({message: "Searched", data: results});
-            console.log(results)
+            // console.log(results)
         }
     });
 });
+
+//route for obtaining data for the itemPage
+app.get('/itemPage', (req, res) => {
+    const title = req.query.title
+    // console.log("title: ", title)
+    db.query(`SELECT id, title, description, category, price, created_at, user_id FROM items WHERE title= '${title}'`, (error, results) => {
+        if (error) {
+            console.error(error);
+            res.status(500).send('Server error');
+        } else {
+            res.send({message: "Searched", data: results});
+            // console.log(results)
+        }
+    });
+});
+
+// Handle POST request to add a review from itemPage
+app.post('/itemPage', (req, res) => {
+    const itemId = req.body.item_id;
+    const reviewerUsername = req.body.reviewer_username;
+    const rating = req.body.rating;
+    const description = req.body.description;
+  
+    // Check if the reviewer has already submitted 3 reviews today
+    const today = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).slice(0.10);
+    const formattedDate = new Date(today).toISOString().slice(0, 10);
+  
+    db.query(
+      'SELECT COUNT(*) as count FROM reviews WHERE reviewer_username = ? AND DATE(created_at) = ? ',
+      [reviewerUsername, formattedDate],
+      (err, result) => {
+        console.log("first query results:", reviewerUsername + " " + formattedDate )
+        if (err) {
+          console.error(err);
+          return res.send({message: "Failed to count reviews"});
+        }
+  
+        const count = result[0].count;
+  
+        if (count >= 3) {
+          return res.send({ message: 'You have already submitted 3 reviews today.' });
+        }
+  
+        // Check if the reviewer is the item owner
+        // item_id is a foreign key in the reviews table connected to the id of the item in the items table
+        //checking if the two match
+        db.query(
+          'SELECT id FROM items WHERE id = ?',
+          [itemId],
+          (err, result) => {
+            // console.log("item Id that's going to sql", itemId)
+            if (err) {
+              console.error(err);
+              return res.send({ message: 'Failed to check item id.' });
+            }
+    
+            db.query(
+              'SELECT COUNT(*) as count FROM items WHERE user_id = ? AND id = ?',
+              [reviewerUsername, itemId],
+              (err, result) => {
+                if (err) {
+                  console.error(err);
+                  return res.send({ message: 'Failed to count item owner.' });
+                }
+  
+                const count = result[0].count;
+  
+                if (count > 0) {
+                  return res.send({ message: 'You cannot review your own item.' });
+                }
+  
+                // Insert the review into the Review table
+                db.query(
+                  'INSERT INTO reviews (item_id, reviewer_username, rating, description) VALUES (?, ?, ?, ?)',
+                  [itemId, reviewerUsername, rating, description],
+                  (err, result) => {
+                    if (err) {
+                      console.error(err);
+                      return res.send({ message: 'Failed to add review.' });
+                    }
+  
+                    return res.send({ message: 'Review added successfully.' });
+                  }
+                );
+              }
+            );
+          }
+        );
+      }
+    );
+  });
+  
 
 // Route for creating a new item
 app.post('/items', (req, res) => {
@@ -187,7 +268,7 @@ app.post('/items', (req, res) => {
     const price = req.body.price;
     const userId = req.body.userId;
 
-    console.log('userId:', userId);
+    // console.log('userId:', userId);
     
     // Check if the user has already posted 3 items today
     const today = new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }).slice(0.10);
@@ -196,8 +277,8 @@ app.post('/items', (req, res) => {
     db.query(`SELECT COUNT(*) AS count FROM items WHERE user_id = ? AND DATE(created_at) = ?`, [userId, formattedDate],
     (err, results) => {
         if (err) throw err;
-        console.log("date: ", formattedDate)
-        console.log("results: ", results[0].count)
+        // console.log("date: ", formattedDate)
+        // console.log("results: ", results[0].count)
         if (results[0].count >= 3) {
             console.log("count is maxed for user today")
             return res.send({message: 'you have already posted 3 items today'});
