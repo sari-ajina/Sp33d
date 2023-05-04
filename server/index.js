@@ -131,8 +131,8 @@ app.post('/homepage', (req, res) => {
 
     const category = req.body.category
     db.query(`SELECT title, description, category, price, created_at, user_id FROM items WHERE category= '${category}'`,
-        (err, results) => {
-            if(err) throw err;
+    (err, results) => {
+        if(err) throw err;
 
             res.send({message: "Searched"})
         }

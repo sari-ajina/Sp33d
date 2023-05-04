@@ -44,18 +44,31 @@ function Item() {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Title:</label>
+          <br></br>
           <input type="text" value={title} onChange={e => setTitle(e.target.value)} required />
         </div>
         <div>
           <label>Description:</label>
+          <br></br>
           <textarea value={description} onChange={e => setDescription(e.target.value)} required />
         </div>
         <div>
           <label>Category:</label>
+          <br></br>
+          {/* ask chatGPT how to turn this input with a select with the options Sedan, SUV, Convertible, Sport and Retro, and being able to set the selcted value to setCategory */}
           <input type="text" value={category} onChange={e => setCategory(e.target.value)} required />
+          <select onChange={e => setCategory(e.target.value)} required>
+            <option value="-1"></option>
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
+            <option value="Convertible">Convertible</option>
+            <option value="Sport">Sport</option>
+            <option value="Retro">Retro</option>
+          </select>
         </div>
         <div>
           <label>Price:</label>
+          <br></br>
           <input type="number" value={price} onChange={e => setPrice(e.target.value)} required />
         </div>
         <button type="submit">Submit</button>

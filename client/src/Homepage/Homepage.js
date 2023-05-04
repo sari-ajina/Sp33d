@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './Homepage.css';
 import Axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import SearchBar from '../components/SearchBar/SearchBar';
+import ModalFilter from '../components/Bootstrap/ModalFilter';
+import Button from 'react-bootstrap/Button';
+import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 function Homepage() {
     const [tableName, setTableName] = useState("");
-    const navigate = useNavigate();
+    const [modalShow, setModalShow] = useState(false);
+
+    // const navigate = useNavigate();
     
     const [status, setStatus] = useState("");
 
@@ -36,11 +41,23 @@ function Homepage() {
             }}>
         </input> */}
         {/* <button className='button' onClick={initialize}>Initialize Database</button> */}
+        
         <SearchBar/>
+
+        <Button onClick={() => setModalShow(true)}>
+            Filter 
+        </Button>
+
+        <ModalFilter
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+        />
+
         <Link to='/items'>
             <button>Add an Item</button>
         </Link>
-        <h1>{status}</h1>
+
+        {/* <h1>{status}</h1> */}
     </div>
     );
 }
