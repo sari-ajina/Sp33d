@@ -151,6 +151,217 @@ app.get('/homepage', (req, res) => {
             // console.log(results)
         }
     });
+
+    const filteredOption = req.query.filteredOption;
+
+    if(filteredOption) {
+    
+        let query = '';
+        const category1 = req.query.category1;
+        const category2 = req.query.category2;
+        const userX = req.query.userX;
+
+        switch (filteredOption) {
+          case 'option1':
+            console.log("option1 was selected and submitted")
+            query = `SELECT * FROM items i1 WHERE price = (
+                    SELECT MAX(price) FROM items i2 WHERE i2.category = i1.category
+                    )`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 1"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          case 'option2':
+            console.log("option2 was selected and submitted")
+            query = `SELECT DISTINCT u.username 
+                    FROM users u
+                    JOIN items i1 ON u.username = i1.user_id
+                    JOIN items i2 ON u.username = i2.user_id AND LEFT(i1.created_at, 9) = LEFT(i2.created_at, 9)
+                    WHERE i1.category = '${category1}' AND i2.category = '${category2}'`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 2"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          case 'option3':
+            console.log("option3 was selected and submitted")
+            query = `SELECT i.id, i.user_id, i.category, i.price, u.username, COUNT(*) as num_reviews
+                    FROM items i JOIN users u ON i.user_id = u.username
+                    JOIN reviews r ON i.id = r.item_id
+                    WHERE u.username = '${userX}' AND r.rating IN ('Excellent', 'Good')
+                    GROUP BY i.id
+                    HAVING COUNT(*) = SUM(r.rating = 'Excellent' OR r.rating = 'Good')`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 3"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          case 'option4':
+            console.log("option4 was selected and submitted")
+            query = `SELECT username, COUNT(*) AS num_items
+                    FROM users JOIN items ON username = items.user_id
+                    WHERE created_at >= '2020-05-01'
+                    GROUP BY username
+                    ORDER BY num_items DESC
+                    LIMIT 1`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 4"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          case 'option5':
+            console.log("option5 was selected and submitted")
+            query = `SELECT DISTINCT u.username FROM users u
+                    JOIN favorites f1 ON u.id = f1.user_id AND f1.favorite_id IN (
+                      SELECT favorite_id FROM favorites WHERE user_id = 'userX'
+                    )
+                    JOIN favorites f2 ON u.id = f2.user_id AND f2.favorite_id IN (
+                      SELECT favorite_id FROM favorites WHERE user_id = 'userY'
+                    )
+                    WHERE u.id NOT IN ('userX', 'userY')`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 5"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          case 'option6':
+            console.log("option6 was selected and submitted")
+            query = `SELECT DISTINCT u.username FROM users u
+                    JOIN items i ON u.id = i.user_id
+                    JOIN reviews r ON i.id = r.item_id AND r.rating = 'Excellent'
+                    GROUP BY u.username
+                    HAVING COUNT(*) < 3`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 6"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          case 'option7':
+            console.log("option7 was selected and submitted")
+            query = `SELECT DISTINCT reviewer_username
+                    FROM reviews
+                    WHERE reviewer_username NOT IN (
+                    SELECT reviewer_username
+                    FROM reviews
+                    WHERE rating = 'Poor'
+                    )`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 7"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          case 'option8':
+            console.log("option8 was selected and submitted")
+            query = `SELECT reviewer_username
+                    FROM reviews
+                    GROUP BY reviewer_username
+                    HAVING COUNT(*) = SUM(rating = 'Poor')`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 8"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          case 'option9':
+            console.log("option9 was selected and submitted")
+            query = `SELECT user_id
+                    FROM items i
+                    WHERE NOT EXISTS (
+                    SELECT *
+                    FROM reviews r
+                    WHERE r.item_id = i.id
+                    AND r.rating = 'Poor'
+                    )`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 9"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          case 'option10':
+            console.log("option10 was selected and submitted")
+            query = `SELECT DISTINCT r1.reviewer_username AS user_A, r2.reviewer_username AS user_B
+                    FROM reviews r1
+                    JOIN reviews r2
+                    JOIN items i2 ON r1.item_id = i2.id
+                    JOIN items i1 ON r2.item_id = i1.id
+                    WHERE r1.reviewer_username < r2.reviewer_username
+                    AND r1.rating = 'excellent' AND r2.rating = 'excellent'
+                    AND NOT EXISTS (
+                    SELECT *
+                    FROM reviews r3
+                    WHERE r3.item_id = r1.item_id
+                    AND r3.reviewer_username IN (r1.reviewer_username, r2.reviewer_username)
+                    AND r3.rating != 'excellent'
+                    )`;
+
+            db.query(query, (error, res) => {
+                if (error) {
+                    console.error(error);
+                    res.status(500).send('Server error');
+                } else {
+                    res.send({message: "Searched Option 10"});
+                    // console.log(results)
+                }
+            } )
+            break;
+          default:
+            break;
+        }
+    }
 });
 
 //search page

@@ -42,42 +42,50 @@ function GridCards() {
 
     return (
         <Row xs={1} md={2} className="g-4">
-        {data.map((item) => (
-            <Col key={item.id}>
-                <Card border='info'>
-                    <Card.Img variant="top" src="holder.js/100px160" alt='item image unavailable or unable to load'/>
-                    <Card.Body>
-                        <Card.Title>
-                            <Card.Header>
-                                <Link onClick={handleLinkClick} to="/itemPage">
-                                    <a onClick={() => handleTitleClick(item.title)}  >
-                                        Title: {item.title}
-                                    </a>
-                                </Link>
-                            </Card.Header>
-                        </Card.Title>
-                        <Card.Text>
-                            Description: {item.description}
-                        </Card.Text>
-                        <Card.Text>
-                            Category: {item.category}
-                        </Card.Text>
-                        <Card.Text>
-                            Price: {item.price}
-                        </Card.Text>
-                        <Card.Text>
-                            User: {item.user_id}
-                        </Card.Text>
-                        <Card.Footer>
-                            <small className="text-muted">
-                                Created: {item.created_at.slice(0,10)}
-                            </small>
-                        </Card.Footer>
-                    </Card.Body>
-                </Card>
-            </Col>
-        ))}
-    </Row>
+            {data ? (
+                data.length > 0 ? (
+                    data.map((item) => (
+                        <Col key={item.id}>
+                            <Card border='info'>
+                                <Card.Img variant="top" src="holder.js/100px160" alt='item image unavailable or unable to load'/>
+                                <Card.Body>
+                                    <Card.Title>
+                                        <Card.Header>
+                                            <Link onClick={handleLinkClick} to="/itemPage">
+                                                <a onClick={() => handleTitleClick(item.title)}  >
+                                                    Title: {item.title}
+                                                </a>
+                                            </Link>
+                                        </Card.Header>
+                                    </Card.Title>
+                                    <Card.Text>
+                                        Description: {item.description}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Category: {item.category}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Price: {item.price}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        User: {item.user_id}
+                                    </Card.Text>
+                                    <Card.Footer>
+                                        <small className="text-muted">
+                                            Created: {item.created_at.slice(0,10)}
+                                        </small>
+                                    </Card.Footer>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))
+                ) : (
+                    <h1>No items found with category of {category}</h1>
+                )
+            ) : (
+                <h1>Loading...</h1>
+            )}
+        </Row>
     );
 }
 
