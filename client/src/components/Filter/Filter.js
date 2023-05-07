@@ -11,24 +11,9 @@ function Filter(props){
     console.log(data)
     
     return(
-        <>
-        <Row xs={1} md={2} className="g-4">
-            {data.forEach(obj => {
-                Object.keys(obj).forEach(key => {
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>
-                                Key: {key}
-                            </Card.Title>
-                            <Card.Text>
-                                Value: {obj[key]}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                });
-            })}
-        </Row>
-        </>
+        <div>
+            
+        </div>
     )
 }
 

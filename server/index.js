@@ -153,6 +153,29 @@ app.get('/homepage', (req, res) => {
     });
 });
 
+app.post('/profile', (req, res) => {
+    const user = req.body.username;
+    const profileUser = req.body.profileUser;
+
+    console.log("user:", user)
+    console.log("profile:", profileUser)
+
+    if (user == profileUser) {
+        return res.send({ message: 'you cannot follow yourself' }); // Return the response and exit the function
+    }
+
+    db.query(`INSERT INTO favorites (user_id, favorite_user_id, favorite)
+        VALUES (?, ?, true)
+        ON DUPLICATE KEY UPDATE favorite = NOT favorite;`, [user, profileUser],
+        async (err, results) => {
+            if (err) {
+                return res.send({ err: err }); // Return the error response and exit the function
+            }
+
+            return res.send({ message: 'user favorited' }); // Return the success response and exit the function
+        })
+})
+
 app.get('/filter', (req, res) => {
     const filteredOption = req.query.filteredOption;
     console.log(filteredOption)
@@ -162,6 +185,7 @@ app.get('/filter', (req, res) => {
         let query = '';
         const category1 = req.query.category1;
         const category2 = req.query.category2;
+        const option3 = req.query.option3;
         const userX = req.query.userX;
 
         switch (filteredOption) {
@@ -204,7 +228,7 @@ app.get('/filter', (req, res) => {
             query = `SELECT i.id, i.user_id, i.category, i.price, u.username, COUNT(*) as num_reviews
                     FROM items i JOIN users u ON i.user_id = u.username
                     JOIN reviews r ON i.id = r.item_id
-                    WHERE u.username = '${userX}' AND r.rating IN ('Excellent', 'Good')
+                    WHERE u.username = '${option3}' AND r.rating IN ('Excellent', 'Good')
                     GROUP BY i.id
                     HAVING COUNT(*) = SUM(r.rating = 'Excellent' OR r.rating = 'Good')`;
 

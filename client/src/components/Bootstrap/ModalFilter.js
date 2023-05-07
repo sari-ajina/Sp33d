@@ -38,10 +38,76 @@ function ModalFilter(props) {
 
   const handleSubmit = async (event) => {
     if (selectedFilter) {
-      Axios.get('http://localhost:3001/filter',{params: { filteredOption: selectedFilter, category1: category1, category2: category2, userX: userX }} )
+      Axios.get('http://localhost:3001/filter',{params: { filteredOption: selectedFilter, category1: category1, category2: category2, userX: userX, option3: option3 }} )
         .then(response => {
-          console.log(response.data);
-          setData(response.data.data);
+          switch (selectedFilter) {
+            case 'option1':
+              let dataToSet1 = {
+                Title: response.data.data[0].title
+              }
+              setData(dataToSet1)
+              break;
+            case 'option2':
+              let dataToSet2 = {
+                Title: ''
+              }
+              setData(dataToSet2)
+              break;
+            case 'option3':
+              let dataToSet3 = {
+                Title: ''
+              }
+              setData(response.data.data)
+              // setData(dataToSet3)
+              break;
+            case 'option4':
+              let dataToSet4 = {
+                Title: ''
+              }
+              setData(dataToSet4)
+              break;
+            case 'option5':
+              let dataToSet5 = {
+                Title: ''
+              }
+              setData(dataToSet5)
+              break;
+            case 'option6':
+              let dataToSet6 = {
+                Title: ''
+              }
+              setData(dataToSet6)
+              break;
+            case 'option7':
+              let dataToSet7 = {
+                Title: ''
+              }
+              setData(dataToSet7)
+              break;
+            case 'option8':
+              let dataToSet8 = {
+                Title: ''
+              }
+              setData(dataToSet8)
+              break;
+            case 'option9':
+              let dataToSet9 = {
+                Title: ''
+              }
+              setData(dataToSet9)
+              break;
+            case 'option10':
+              let dataToSet10 = {
+                Title: ''
+              }
+              setData(dataToSet10)
+              break;
+          
+            default:
+              break;
+          }
+          // console.log(response.data);
+          // setData(response.data.data);
           // Handle the response data here
         })
         .catch(error => {
@@ -99,7 +165,7 @@ function ModalFilter(props) {
           <Form.Check
             id='option3'
             type="radio"
-            label="3-List all the items posted by user X, such that all the comments are &quot;Excellent&quot; or &quot;good&quot; for these items:"
+            label="3-List all the items posted by user X, such that all the comments are &quot;Excellent&quot; or &quot;good&quot;:"
             name='filter'
             checked={selectedFilter === 'option3'}
             onChange={(e) => setSelectedFilter(e.target.id)}

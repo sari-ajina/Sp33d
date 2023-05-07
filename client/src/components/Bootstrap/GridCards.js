@@ -10,8 +10,7 @@ import { Link } from "react-router-dom";
 function GridCards() {
 
     const [data, setData] = useState([]);
-    const { setTitle, title, category} = useContext(UserContext);
-    const {setItemId} = useContext(UserContext)
+    const { setTitle, title, category, setItemId, profileUser, setProfileUser} = useContext(UserContext);
 
     useEffect(() => {
         if (true) {
@@ -34,8 +33,20 @@ function GridCards() {
         console.log(title);
     }
 
+    const handleUserClick = (test) =>{
+        setProfileUser(test);
+        console.log(profileUser);
+    }
+
     const handleLinkClick = (event) => {
         if (title == null || title == "") {
+            event.preventDefault(); // stop navigation to /homepage page
+            // alert('Please Enter an Existing Username and Password');
+        }
+    }
+
+    const linkUser = (event) => {
+        if (profileUser == null || profileUser == "") {
             event.preventDefault(); // stop navigation to /homepage page
             // alert('Please Enter an Existing Username and Password');
         }
@@ -73,7 +84,14 @@ function GridCards() {
                                         Price: {item.price}
                                     </Card.Text>
                                     <Card.Text>
-                                        User: {item.user_id}
+                                        <Link onClick={linkUser} to="/profile">
+                                            <a onClick={() => {
+                                                handleUserClick(item.user_id);
+                                            }}
+                                            >
+                                                User: {item.user_id}
+                                            </a>
+                                        </Link>
                                     </Card.Text>
                                     <Card.Footer>
                                         <small className="text-muted">

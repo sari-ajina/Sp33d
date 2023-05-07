@@ -9,6 +9,7 @@ import UserContext from './Contexts/UserContext';
 import SearchedItem from './SearchedItem/SearchedItem';
 import ItemPage from './components/Item/ItemPage';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Profile from './Profile/Profile';
 
 function App() {
   const [username, setUsername] = useState("");
@@ -16,9 +17,19 @@ function App() {
   const [title, setTitle] = useState("");
   const [data, setData] = useState([]);
   const [itemId, setItemId] = useState(null);
+  const [profileUser, setProfileUser] = useState('');
 
   return (
-      <UserContext.Provider value={{username, setUsername, category, setCategory, title, setTitle, data, setData, itemId, setItemId}}>
+      <UserContext.Provider 
+        value={{
+          username, setUsername, 
+          category, setCategory, 
+          title, setTitle, 
+          data, setData, 
+          itemId, setItemId,
+          profileUser, setProfileUser
+          }}
+        >
       <Router>
           <Routes>
             <Route path="/" element={<Register/>}></Route>
@@ -27,6 +38,7 @@ function App() {
             <Route path="/items" element={<Item/>}></Route>
             <Route path="/searchedItem" element={<SearchedItem/>}></Route>
             <Route path="/itemPage" element={<ItemPage/>}></Route>
+            <Route path="/profile" element={<Profile/>}></Route>
           </Routes>
       </Router>
     </UserContext.Provider>
