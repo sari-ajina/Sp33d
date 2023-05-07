@@ -151,8 +151,11 @@ app.get('/homepage', (req, res) => {
             // console.log(results)
         }
     });
+});
 
+app.get('/filter', (req, res) => {
     const filteredOption = req.query.filteredOption;
+    console.log(filteredOption)
 
     if(filteredOption) {
     
@@ -168,12 +171,12 @@ app.get('/homepage', (req, res) => {
                     SELECT MAX(price) FROM items i2 WHERE i2.category = i1.category
                     )`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 1"});
+                    res.send({message: "Filtered Option 1", data: results});
                     // console.log(results)
                 }
             } )
@@ -186,12 +189,12 @@ app.get('/homepage', (req, res) => {
                     JOIN items i2 ON u.username = i2.user_id AND LEFT(i1.created_at, 9) = LEFT(i2.created_at, 9)
                     WHERE i1.category = '${category1}' AND i2.category = '${category2}'`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 2"});
+                    res.send({message: "Filtered Option 2", data: results});
                     // console.log(results)
                 }
             } )
@@ -205,12 +208,12 @@ app.get('/homepage', (req, res) => {
                     GROUP BY i.id
                     HAVING COUNT(*) = SUM(r.rating = 'Excellent' OR r.rating = 'Good')`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 3"});
+                    res.send({message: "Filtered Option 3", data: results});
                     // console.log(results)
                 }
             } )
@@ -224,12 +227,12 @@ app.get('/homepage', (req, res) => {
                     ORDER BY num_items DESC
                     LIMIT 1`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 4"});
+                    res.send({message: "Filtered Option 4", data: results});
                     // console.log(results)
                 }
             } )
@@ -245,12 +248,12 @@ app.get('/homepage', (req, res) => {
                     )
                     WHERE u.id NOT IN ('userX', 'userY')`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 5"});
+                    res.send({message: "Filtered Option 5", data: results});
                     // console.log(results)
                 }
             } )
@@ -258,17 +261,17 @@ app.get('/homepage', (req, res) => {
           case 'option6':
             console.log("option6 was selected and submitted")
             query = `SELECT DISTINCT u.username FROM users u
-                    JOIN items i ON u.id = i.user_id
-                    JOIN reviews r ON i.id = r.item_id AND r.rating = 'Excellent'
-                    GROUP BY u.username
-                    HAVING COUNT(*) < 3`;
+            JOIN items i ON u.username = i.user_id
+            JOIN reviews r ON i.id = r.item_id AND r.rating = 'Excellent'
+            GROUP BY u.username
+            HAVING COUNT(*) < 3;`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 6"});
+                    res.send({message: "Filtered Option 6", data: results});
                     // console.log(results)
                 }
             } )
@@ -283,12 +286,12 @@ app.get('/homepage', (req, res) => {
                     WHERE rating = 'Poor'
                     )`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 7"});
+                    res.send({message: "Filtered Option 7", data: results});
                     // console.log(results)
                 }
             } )
@@ -300,19 +303,19 @@ app.get('/homepage', (req, res) => {
                     GROUP BY reviewer_username
                     HAVING COUNT(*) = SUM(rating = 'Poor')`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 8"});
+                    res.send({message: "Filtered Option 8", data: results});
                     // console.log(results)
                 }
             } )
             break;
           case 'option9':
             console.log("option9 was selected and submitted")
-            query = `SELECT user_id
+            query = `SELECT user_id, title
                     FROM items i
                     WHERE NOT EXISTS (
                     SELECT *
@@ -321,12 +324,12 @@ app.get('/homepage', (req, res) => {
                     AND r.rating = 'Poor'
                     )`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 9"});
+                    res.send({message: "Filtered Option 9", data: results});
                     // console.log(results)
                 }
             } )
@@ -348,12 +351,12 @@ app.get('/homepage', (req, res) => {
                     AND r3.rating != 'excellent'
                     )`;
 
-            db.query(query, (error, res) => {
+            db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
-                    res.status(500).send('Server error');
+                    // res.status(500).send('Server error');
                 } else {
-                    res.send({message: "Searched Option 10"});
+                    res.send({message: "Filtered Option 10", data: results});
                     // console.log(results)
                 }
             } )
@@ -362,7 +365,7 @@ app.get('/homepage', (req, res) => {
             break;
         }
     }
-});
+})
 
 //search page
 app.get('/searchedItem', (req, res) => {

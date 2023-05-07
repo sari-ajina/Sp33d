@@ -71,6 +71,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 ### `npm installs`
 
 npm install axios
+npm install react-bootstrap bootstrap
 
 ### `videos`
 phase 1: https://youtu.be/lV4pfaygBQQ

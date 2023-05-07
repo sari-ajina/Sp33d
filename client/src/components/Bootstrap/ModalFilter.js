@@ -1,35 +1,20 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Axios from 'axios';
+import UserContext from '../../Contexts/UserContext';
 
 function ModalFilter(props) {
 
   const [selectedFilter, setSelectedFilter] = useState('');
   const [category1, setCategory1] = useState('');
   const [category2, setCategory2] = useState('');
-  // const [queryResult, setQueryResult] = useState('');
-  // const [expensive, setExpensive] = useState(false);
-  // const [mostPosts, setMostPosts] = useState(false);
+  const [option3, setOption3] = useState('');
   const [userX, setUserX] = useState('');
   const [userY, setUserY] = useState('');
 
-  const [option1, setOption1] = useState(false);
-  const [option2, setOption2] = useState(false);
-  const [option3, setOption3] = useState(false);
-  const [option4, setOption4] = useState(false);
-  const [option5, setOption5] = useState(false);
-  const [option6, setOption6] = useState(false);
-  const [option7, setOption7] = useState(false);
-  const [option8, setOption8] = useState(false);
-  const [option9, setOption9] = useState(false);
-  const [option10, setOption10] = useState(false);
-
-  // const handleFilterChange = (event) => {
-  //   setSelectedFilter(event.target.value);
-  //   console.log(event.target.value)
-  // };
+  const {setData} = useContext(UserContext);
 
   const handleCategory1Change = (event) => {
     setCategory1(event.target.value);
@@ -39,10 +24,9 @@ function ModalFilter(props) {
     setCategory2(event.target.value);
   };
 
-  // const handleLabelChange = (event) => {
-  //   setExpensive(event.target.checked);
-  //   setMostPosts(event.target.checked);
-  // };
+  const handleOption3Change = (event) => {
+    setOption3(event.target.value);
+  };
 
   const handleUserXChange = (event) => {
     setUserX(event.target.value);
@@ -53,114 +37,11 @@ function ModalFilter(props) {
   };
 
   const handleSubmit = async (event) => {
-    const inputElement1 = document.getElementById("option10-input1");
-    const inputElement2 = document.getElementById("option10-input2");
-    
-    // Check if the input value is empty
-    if (!inputElement1.value || !inputElement2.value) {
-      event.preventDefault(); // Prevent form submission
-    }
-
-    let query = '';
-    console.log(selectedFilter)
-    switch (selectedFilter) {
-      case 'option1':
-        console.log("option1 was selected and submitted")
-        query = `SELECT * FROM items i1 WHERE price = (
-                SELECT MAX(price) FROM items i2 WHERE i2.category = i1.category
-        )`;
-        break;
-      case 'option2':
-        console.log("option2 was selected and submitted")
-        query = `SELECT DISTINCT u.username FROM users u
-                JOIN items i1 ON u.id = i1.user_id
-                JOIN items i2 ON u.id = i2.user_id AND i1.date_posted = i2.date_posted
-                WHERE i1.category = '${category1}' AND i2.category = '${category2}'`;
-        break;
-      case 'option3':
-        console.log("option3 was selected and submitted")
-        query = `SELECT i.id, i.name, i.category, i.price, u.username, COUNT(*) as num_reviews
-                FROM items i JOIN users u ON i.user_id = u.id
-                JOIN reviews r ON i.id = r.item_id
-                WHERE u.username = 'userX' AND r.rating IN ('Excellent', 'Good')
-                GROUP BY i.id
-                HAVING COUNT(*) = SUM(r.rating = 'Excellent' OR r.rating = 'Good')`;
-        break;
-      case 'option4':
-        console.log("option4 was selected and submitted")
-        query = `SELECT username, COUNT(*) AS num_items
-                FROM users JOIN items ON users.id = items.user_id
-                WHERE date_posted >= '2020-05-01'
-                GROUP BY username
-                ORDER BY num_items DESC
-                LIMIT 1`;
-        break;
-      case 'option5':
-        console.log("option5 was selected and submitted")
-        query = `SELECT DISTINCT u.username FROM users u
-                JOIN favorites f1 ON u.id = f1.user_id AND f1.favorite_id IN (
-                  SELECT favorite_id FROM favorites WHERE user_id = 'userX'
-                )
-                JOIN favorites f2 ON u.id = f2.user_id AND f2.favorite_id IN (
-                  SELECT favorite_id FROM favorites WHERE user_id = 'userY'
-                )
-                WHERE u.id NOT IN ('userX', 'userY')`;
-        break;
-      case 'option6':
-        console.log("option6 was selected and submitted")
-        query = `SELECT DISTINCT u.username FROM users u
-                JOIN items i ON u.id = i.user_id
-                JOIN reviews r ON i.id = r.item_id AND r.rating = 'Excellent'
-                GROUP BY u.username
-                HAVING COUNT(*) < 3`;
-        break;
-      case 'option7':
-        console.log("option7 was selected and submitted")
-        query = `SELECT DISTINCT u.username FROM users u
-                JOIN reviews r ON u.id = r.user_id AND r.rating = 'Poor'
-                WHERE u.id NOT IN (SELECT DISTINCT user_id FROM reviews WHERE rating != 'Poor')`;
-        break;
-      case 'option8':
-        console.log("option8 was selected and submitted")
-        query = `SELECT DISTINCT u.username FROM users u
-                WHERE NOT EXISTS (
-                  SELECT * FROM comments c
-                  WHERE c.user_id = u.id AND c.rating != 'Poor'
-                )`;
-        break;
-      case 'option9':
-        console.log("option9 was selected and submitted")
-        query = `SELECT u1.username AS user_a, u2.username AS user_b, i.name, 'Excellent' AS rating
-                FROM users u1
-                INNER JOIN users u2 ON u1.id < u2.id
-                INNER JOIN items i ON i.user_id = u1.id AND i.user_id = u2.id
-                WHERE NOT EXISTS (
-                  SELECT * FROM comments c1
-                  WHERE c1.user_id = u1.id AND c1.item_id = i.id AND c1.rating != 'Excellent'
-                ) AND NOT EXISTS (
-                  SELECT * FROM comments c2
-                  WHERE c2.user_id = u2.id AND c2.item_id = i.id AND c2.rating != 'Excellent'
-                )`;
-        break;
-      case 'option10':
-        console.log("option10 was selected and submitted")
-        query = `SELECT DISTINCT c1.user_id AS user_a, c2.user_id AS user_b
-                FROM comments c1
-                JOIN comments c2 ON c1.item_id = c2.item_id AND c1.user_id < c2.user_id
-                WHERE c1.rating = 'Excellent' AND c2.rating = 'Excellent'
-                GROUP BY c1.user_id, c2.user_id
-                HAVING COUNT(*) = (
-                  SELECT COUNT(*) FROM items i WHERE i.user_id = c1.user_id OR i.user_id = c2.user_id
-                )`;
-        break;
-      default:
-        break;
-    }
-
     if (selectedFilter) {
-      Axios.get('http://localhost:3001/homepage', { filterOption: selectedFilter })
+      Axios.get('http://localhost:3001/filter',{params: { filteredOption: selectedFilter, category1: category1, category2: category2, userX: userX }} )
         .then(response => {
           console.log(response.data);
+          setData(response.data.data);
           // Handle the response data here
         })
         .catch(error => {
@@ -175,7 +56,7 @@ function ModalFilter(props) {
         <Modal.Title>Filter Options</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form.Group controlId='option1'>
+        <Form.Group>
           <Form.Check
             id='option1'
             type="radio"
@@ -186,7 +67,7 @@ function ModalFilter(props) {
           />
         </Form.Group>
 
-        <Form.Group controlId='option2'>
+        <Form.Group>
           <Form.Check
             id='option2'
             type="radio"
@@ -214,7 +95,7 @@ function ModalFilter(props) {
           </select>
         </Form.Group>
 
-        <Form.Group controlId='option3'>
+        <Form.Group>
           <Form.Check
             id='option3'
             type="radio"
@@ -223,10 +104,10 @@ function ModalFilter(props) {
             checked={selectedFilter === 'option3'}
             onChange={(e) => setSelectedFilter(e.target.id)}
           />
-          <Form.Control type="text" placeholder="Enter Item Name" value={userX} onChange={handleUserXChange} required/>
+          <Form.Control id='option3' type="text" placeholder="Enter User X" value={option3} onChange={handleOption3Change} required/>
         </Form.Group>
 
-        <Form.Group controlId='option4'>
+        <Form.Group>
           <Form.Check
             id='option4'
             type="radio"
@@ -237,7 +118,7 @@ function ModalFilter(props) {
           />
         </Form.Group>
 
-        <Form.Group controlId='option5'>
+        <Form.Group>
           <Form.Check
             id='option5'
             type="radio"
@@ -246,11 +127,11 @@ function ModalFilter(props) {
             checked={selectedFilter === 'option5'}
             onChange={(e) => setSelectedFilter(e.target.id)}
           />
-          <Form.Control id='option5' type="text" placeholder="Enter User X" value={userX} onChange={handleUserXChange} required/>
-          <Form.Control id='option5' type="text" placeholder="Enter User Y" value={userX} onChange={handleUserXChange} required/>
+          <Form.Control id='option5' type="text" placeholder="Enter User X" value={userX} onChange={handleUserXChange} required/> 
+          <Form.Control id='option5' type="text" placeholder="Enter User Y" value={userY} onChange={handleUserYChange} required/>
         </Form.Group>
 
-        <Form.Group controlId='option6'>
+        <Form.Group>
           <Form.Check
             id='option6'
             type="radio"
@@ -261,7 +142,7 @@ function ModalFilter(props) {
           />
         </Form.Group>
 
-        <Form.Group controlId='option7'>
+        <Form.Group>
           <Form.Check
             id='option7'
             type="radio"
@@ -272,7 +153,7 @@ function ModalFilter(props) {
           />
         </Form.Group>
 
-        <Form.Group controlId='option8'>
+        <Form.Group>
           <Form.Check
             id='option8'
             type="radio"
@@ -283,7 +164,7 @@ function ModalFilter(props) {
           />
         </Form.Group>
 
-        <Form.Group controlId='option9'>
+        <Form.Group>
           <Form.Check
             id='option9'
             type="radio"
@@ -296,7 +177,7 @@ function ModalFilter(props) {
           />
         </Form.Group>
 
-        <Form.Group controlId='option10'>
+        <Form.Group>
           <Form.Check
             id='option10'
             type="radio"
@@ -306,8 +187,8 @@ function ModalFilter(props) {
             checked={selectedFilter === 'option10'}
             onChange={(e) => setSelectedFilter(e.target.id)}
           />
-          <Form.Control id='option10-input1' type="text" placeholder="Enter User A" value={userX} onChange={handleUserXChange} required/>
-          <Form.Control id='option10-input2' type="text" placeholder="Enter User B" value={userY} onChange={handleUserYChange} required/>
+          {/* <Form.Control id='option10-input1' type="text" placeholder="Enter User A" value={userX} onChange={handleUserXChange} required/>
+          <Form.Control id='option10-input2' type="text" placeholder="Enter User B" value={userY} onChange={handleUserYChange} required/> */}
         </Form.Group>
 
       </Modal.Body>

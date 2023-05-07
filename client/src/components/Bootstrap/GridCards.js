@@ -47,7 +47,7 @@ function GridCards() {
                     data.map((item) => (
                         <Col key={item.id}>
                             <Card border='info'>
-                                <Card.Img variant="top" src="holder.js/100px160" alt='item image unavailable or unable to load'/>
+                                {/* <Card.Img variant="top" src="holder.js/100px160" alt='item image unavailable or unable to load'/> */}
                                 <Card.Body>
                                     <Card.Title>
                                         <Card.Header>

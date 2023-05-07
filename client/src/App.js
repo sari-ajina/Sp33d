@@ -8,14 +8,16 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import UserContext from './Contexts/UserContext';
 import SearchedItem from './SearchedItem/SearchedItem';
 import ItemPage from './components/Item/ItemPage';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [username, setUsername] = useState("");
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
+  const [data, setData] = useState([]);
 
   return (
-    <UserContext.Provider value={{username, setUsername, category, setCategory, title, setTitle}}>
+      <UserContext.Provider value={{username, setUsername, category, setCategory, title, setTitle, data, setData}}>
       <Router>
           <Routes>
             <Route path="/" element={<Register/>}></Route>

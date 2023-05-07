@@ -6,6 +6,7 @@ import SearchBar from '../components/SearchBar/SearchBar';
 import ModalFilter from '../components/Bootstrap/ModalFilter';
 import Button from 'react-bootstrap/Button';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Filter from '../components/Filter/Filter';
 
 function Homepage() {
     const [tableName, setTableName] = useState("");
@@ -57,6 +58,7 @@ function Homepage() {
             <button>Add an Item</button>
         </Link>
 
+        <Filter></Filter>
         {/* <h1>{status}</h1> */}
     </div>
     );
