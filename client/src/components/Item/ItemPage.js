@@ -6,33 +6,35 @@ function ItemPage() {
     const [data, setData] = useState([]);
     const { title, username} = useContext(UserContext);
     const [description, setDescription] = useState();
-    const [itemId, setItemId] = useState();
+    const [itemId1, setItemId1] = useState();
     // const [reviewer_username, setReviewerUsername] = useState();
     const [rating, setRating] = useState();
-    // let itemId = "";
     const [reviewStatus, setReviewStatus] = useState("");
+    const {itemId} = useContext(UserContext);
 
     useEffect(() => {
         console.log(title)
         console.log(username)
-        Axios.get("http://localhost:3001/itemPage", {params: {title: title}})
-        .then((response) => {
-            console.log(response.data);
-            setData(response.data.data);
-            setItemId(response.data.data[0].id);
-            console.log("logging id data: ", response.data.data[0].id)
-            console.log("item Id: ", itemId)
-            console.log(response)
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        if(itemId != null || itemId != undefined){
+            Axios.get("http://localhost:3001/itemPage", {params: {item_id: itemId}})
+            .then((response) => {
+                console.log(response.data);
+                setData(response.data.data);
+                setItemId1(response.data.data[0].id);
+                console.log("logging id data: ", response.data.data[0].id)
+                console.log("item Id: ", itemId1)
+                console.log(response)
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
     }, []);
 
     const postReview = (event) => {
         event.preventDefault();
 
-        const str = String(itemId)
+        const str = String(itemId1)
 
         const reviewItem = {
             item_id: str,
@@ -44,7 +46,7 @@ function ItemPage() {
         console.log("item str:", str)
 
 
-        if(itemId != "" || itemId != undefined || itemId != null){
+        if(itemId1 != "" || itemId1 != undefined || itemId1 != null){
             Axios.post("http://localhost:3001/itemPage", reviewItem).then(
                 (response)=>{
                     console.log(response.data);
@@ -57,7 +59,7 @@ function ItemPage() {
                 }
             )
         }else{
-            console.log("item id is: ", itemId)
+            console.log("item id is: ", itemId1)
         }
     }
 

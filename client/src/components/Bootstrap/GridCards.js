@@ -11,6 +11,7 @@ function GridCards() {
 
     const [data, setData] = useState([]);
     const { setTitle, title, category} = useContext(UserContext);
+    const {setItemId} = useContext(UserContext)
 
     useEffect(() => {
         if (true) {
@@ -19,7 +20,7 @@ function GridCards() {
                 // console.log("setTitle ",title)
                 console.log(response.data);
                 setData(response.data.data);
-                console.log(response)
+                console.log(response);
             })
             .catch((error) => {
                 console.error(error);
@@ -52,7 +53,11 @@ function GridCards() {
                                     <Card.Title>
                                         <Card.Header>
                                             <Link onClick={handleLinkClick} to="/itemPage">
-                                                <a onClick={() => handleTitleClick(item.title)}  >
+                                                <a onClick={() => {
+                                                    handleTitleClick(item.title);
+                                                    setItemId(item.id);
+                                                }}
+                                                >
                                                     Title: {item.title}
                                                 </a>
                                             </Link>

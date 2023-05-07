@@ -15,9 +15,10 @@ function App() {
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [data, setData] = useState([]);
+  const [itemId, setItemId] = useState(null);
 
   return (
-      <UserContext.Provider value={{username, setUsername, category, setCategory, title, setTitle, data, setData}}>
+      <UserContext.Provider value={{username, setUsername, category, setCategory, title, setTitle, data, setData, itemId, setItemId}}>
       <Router>
           <Routes>
             <Route path="/" element={<Register/>}></Route>

@@ -371,7 +371,7 @@ app.get('/filter', (req, res) => {
 app.get('/searchedItem', (req, res) => {
     const category = req.query.category
     // console.log("category: ", category)
-    db.query(`SELECT title, description, category, price, created_at, user_id FROM items WHERE category= '${category}'`, (error, results) => {
+    db.query(`SELECT id, title, description, category, price, created_at, user_id FROM items WHERE category= '${category}'`, (error, results) => {
         if (error) {
             console.error(error);
             res.status(500).send('Server error');
@@ -384,9 +384,10 @@ app.get('/searchedItem', (req, res) => {
 
 //route for obtaining data for the itemPage
 app.get('/itemPage', (req, res) => {
-    const title = req.query.title
+    // const title = req.query.title
+    const item_id = req.query.item_id
     // console.log("title: ", title)
-    db.query(`SELECT id, title, description, category, price, created_at, user_id FROM items WHERE title= '${title}'`, (error, results) => {
+    db.query(`SELECT id, title, description, category, price, created_at, user_id FROM items WHERE id= '${item_id}'`, (error, results) => {
         if (error) {
             console.error(error);
             res.status(500).send('Server error');
