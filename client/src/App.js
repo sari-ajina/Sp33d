@@ -18,6 +18,7 @@ function App() {
   const [data, setData] = useState([]);
   const [itemId, setItemId] = useState(null);
   const [profileUser, setProfileUser] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState('');
 
   return (
       <UserContext.Provider 
@@ -27,7 +28,8 @@ function App() {
           title, setTitle, 
           data, setData, 
           itemId, setItemId,
-          profileUser, setProfileUser
+          profileUser, setProfileUser,
+          selectedFilter, setSelectedFilter
           }}
         >
       <Router>

@@ -187,6 +187,7 @@ app.get('/filter', (req, res) => {
         const category2 = req.query.category2;
         const option3 = req.query.option3;
         const userX = req.query.userX;
+        const userY = req.query.userY;
 
         switch (filteredOption) {
           case 'option1':
@@ -225,7 +226,7 @@ app.get('/filter', (req, res) => {
             break;
           case 'option3':
             console.log("option3 was selected and submitted")
-            query = `SELECT i.id, i.user_id, i.category, i.price, u.username, COUNT(*) as num_reviews
+            query = `SELECT i.id, i.user_id, i.description, i.title, i.category, i.price, i.created_at, u.username, COUNT(*) as num_reviews
                     FROM items i JOIN users u ON i.user_id = u.username
                     JOIN reviews r ON i.id = r.item_id
                     WHERE u.username = '${option3}' AND r.rating IN ('Excellent', 'Good')
@@ -262,15 +263,13 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option5':
-            console.log("option5 was selected and submitted")
-            query = `SELECT DISTINCT u.username FROM users u
-                    JOIN favorites f1 ON u.id = f1.user_id AND f1.favorite_id IN (
-                      SELECT favorite_id FROM favorites WHERE user_id = 'userX'
-                    )
-                    JOIN favorites f2 ON u.id = f2.user_id AND f2.favorite_id IN (
-                      SELECT favorite_id FROM favorites WHERE user_id = 'userY'
-                    )
-                    WHERE u.id NOT IN ('userX', 'userY')`;
+            // console.log("option5 was selected and submitted")
+            // console.log("userX: ", userX)
+            // console.log("userY: ", userY)
+            query = `SELECT f1.favorite_user_id
+            FROM favorites f1
+            INNER JOIN favorites f2 ON f1.favorite_user_id = f2.favorite_user_id
+            WHERE f1.user_id = '${userX}' AND f2.user_id = '${userY}' AND f1.favorite = true AND f2.favorite = true;`;
 
             db.query(query, (error, results) => {
                 if (error) {

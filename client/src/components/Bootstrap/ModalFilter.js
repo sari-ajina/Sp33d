@@ -7,14 +7,14 @@ import UserContext from '../../Contexts/UserContext';
 
 function ModalFilter(props) {
 
-  const [selectedFilter, setSelectedFilter] = useState('');
+  // const [selectedFilter, setSelectedFilter] = useState('');
   const [category1, setCategory1] = useState('');
   const [category2, setCategory2] = useState('');
   const [option3, setOption3] = useState('');
   const [userX, setUserX] = useState('');
   const [userY, setUserY] = useState('');
 
-  const {setData} = useContext(UserContext);
+  const {selectedFilter, setSelectedFilter, setData} = useContext(UserContext);
 
   const handleCategory1Change = (event) => {
     setCategory1(event.target.value);
@@ -38,69 +38,67 @@ function ModalFilter(props) {
 
   const handleSubmit = async (event) => {
     if (selectedFilter) {
-      Axios.get('http://localhost:3001/filter',{params: { filteredOption: selectedFilter, category1: category1, category2: category2, userX: userX, option3: option3 }} )
+      console.log(selectedFilter)
+      Axios.get('http://localhost:3001/filter',{params: { filteredOption: selectedFilter, category1: category1, category2: category2, userX: userX, userY: userY, option3: option3 }} )
         .then(response => {
           switch (selectedFilter) {
             case 'option1':
-              let dataToSet1 = {
-                Title: response.data.data[0].title
-              }
-              setData(dataToSet1)
+              setData(response.data.data)
               break;
             case 'option2':
               let dataToSet2 = {
                 Title: ''
               }
-              setData(dataToSet2)
+              setData(response.data.data)
               break;
             case 'option3':
               let dataToSet3 = {
                 Title: ''
               }
               setData(response.data.data)
-              // setData(dataToSet3)
+              // setData(response.data.data)
               break;
             case 'option4':
               let dataToSet4 = {
                 Title: ''
               }
-              setData(dataToSet4)
+              setData(response.data.data)
               break;
             case 'option5':
               let dataToSet5 = {
                 Title: ''
               }
-              setData(dataToSet5)
+              setData(response.data.data)
               break;
             case 'option6':
               let dataToSet6 = {
                 Title: ''
               }
-              setData(dataToSet6)
+              setData(response.data.data)
               break;
             case 'option7':
               let dataToSet7 = {
                 Title: ''
               }
-              setData(dataToSet7)
+              setData(response.data.data)
               break;
             case 'option8':
               let dataToSet8 = {
                 Title: ''
               }
-              setData(dataToSet8)
+              setData(response.data.data)
               break;
             case 'option9':
               let dataToSet9 = {
                 Title: ''
               }
-              setData(dataToSet9)
+              setData(response.data.data)
               break;
             case 'option10':
               let dataToSet10 = {
                 Title: ''
               }
-              setData(dataToSet10)
+              setData(response.data.data)
               break;
           
             default:
@@ -193,8 +191,8 @@ function ModalFilter(props) {
             checked={selectedFilter === 'option5'}
             onChange={(e) => setSelectedFilter(e.target.id)}
           />
-          <Form.Control id='option5' type="text" placeholder="Enter User X" value={userX} onChange={handleUserXChange} required/> 
-          <Form.Control id='option5' type="text" placeholder="Enter User Y" value={userY} onChange={handleUserYChange} required/>
+          <Form.Control id='users' type="text" placeholder="Enter User X" value={userX} onChange={handleUserXChange} required/> 
+          <Form.Control id='users' type="text" placeholder="Enter User Y" value={userY} onChange={handleUserYChange} required/>
         </Form.Group>
 
         <Form.Group>
