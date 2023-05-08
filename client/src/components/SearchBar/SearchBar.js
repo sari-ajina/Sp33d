@@ -2,6 +2,9 @@ import React, {useState, useContext} from 'react';
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
 import UserContext from '../../Contexts/UserContext';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import './SearchBar.css'
 
 function SearchBar(){
     const [input, setInput] = useState("");
@@ -31,15 +34,20 @@ function SearchBar(){
 
     return (
         <form onSubmit={(e)=> {e.preventDefault(); search(); }}>
-            <input 
-                onChange={(e)=>{ setInput(e.target.value)}} 
-                placeholder='Search a Category here...'
-                value={input}
-            >
-            </input>
-            <Link onClick={handleLinkClick} to='/searchedItem'>            
-                <button onClick={search} type='submit'>Search</button>
-            </Link>
+            <Form>
+                <Form.Control 
+                    // className='search'
+                    type='search'
+                    className='me-2'
+                    onChange={(e)=>{ setInput(e.target.value)}} 
+                    placeholder='Search a Category here...'
+                    value={input}
+                >
+                </Form.Control>
+                <Link onClick={handleLinkClick} to='/searchedItem'>            
+                    <Button variant='outline-success' className='button' onClick={search} type='submit'>Search</Button>
+                </Link>
+            </Form>
         </form>
     )
 }

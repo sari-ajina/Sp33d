@@ -7,6 +7,7 @@ import ModalFilter from '../components/Bootstrap/ModalFilter';
 import Button from 'react-bootstrap/Button';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Filter from '../components/Filter/Filter';
+import NavbarStyle from '../components/Bootstrap/NavbarStyle';
 
 function Homepage() {
     const [tableName, setTableName] = useState("");
@@ -32,7 +33,8 @@ function Homepage() {
     // }
 
     return (
-    <div className='container'>
+    <div className='contained'>
+        <NavbarStyle></NavbarStyle>
         <h3>Welcome to your home page!</h3>
         {/* <input 
             type="text" 
@@ -43,7 +45,7 @@ function Homepage() {
         </input> */}
         {/* <button className='button' onClick={initialize}>Initialize Database</button> */}
         
-        <SearchBar/>
+        {/* <SearchBar/> */}
 
         <Button onClick={() => setModalShow(true)}>
             Filter 

@@ -8,7 +8,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import UserContext from './Contexts/UserContext';
 import SearchedItem from './SearchedItem/SearchedItem';
 import ItemPage from './components/Item/ItemPage';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import UserProfile from './UserProfile/UserProfile';
+// import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Profile from './Profile/Profile';
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             <Route path="/searchedItem" element={<SearchedItem/>}></Route>
             <Route path="/itemPage" element={<ItemPage/>}></Route>
             <Route path="/profile" element={<Profile/>}></Route>
+            <Route path="/userprofile" element={<UserProfile/>}></Route>
           </Routes>
       </Router>
     </UserContext.Provider>
