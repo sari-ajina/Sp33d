@@ -191,7 +191,6 @@ app.get('/filter', (req, res) => {
 
         switch (filteredOption) {
           case 'option1':
-            console.log("option1 was selected and submitted")
             query = `SELECT * FROM items i1 WHERE price = (
                     SELECT MAX(price) FROM items i2 WHERE i2.category = i1.category
                     )`;
@@ -207,7 +206,6 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option2':
-            console.log("option2 was selected and submitted")
             query = `SELECT DISTINCT u.username 
                     FROM users u
                     JOIN items i1 ON u.username = i1.user_id
@@ -225,7 +223,6 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option3':
-            console.log("option3 was selected and submitted")
             query = `SELECT i.id, i.user_id, i.description, i.title, i.category, i.price, i.created_at, u.username, COUNT(*) as num_reviews
                     FROM items i JOIN users u ON i.user_id = u.username
                     JOIN reviews r ON i.id = r.item_id
@@ -244,7 +241,6 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option4':
-            console.log("option4 was selected and submitted")
             query = `SELECT username, COUNT(*) AS num_items
                     FROM users JOIN items ON username = items.user_id
                     WHERE created_at >= '2020-05-01'
@@ -263,9 +259,6 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option5':
-            // console.log("option5 was selected and submitted")
-            // console.log("userX: ", userX)
-            // console.log("userY: ", userY)
             query = `SELECT f1.favorite_user_id
             FROM favorites f1
             INNER JOIN favorites f2 ON f1.favorite_user_id = f2.favorite_user_id
@@ -282,7 +275,6 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option6':
-            console.log("option6 was selected and submitted")
             query = `SELECT DISTINCT u.username FROM users u
             JOIN items i ON u.username = i.user_id
             JOIN reviews r ON i.id = r.item_id AND r.rating = 'Excellent'
@@ -300,7 +292,6 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option7':
-            console.log("option7 was selected and submitted")
             query = `SELECT DISTINCT reviewer_username
                     FROM reviews
                     WHERE reviewer_username NOT IN (
@@ -320,7 +311,6 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option8':
-            console.log("option8 was selected and submitted")
             query = `SELECT reviewer_username
                     FROM reviews
                     GROUP BY reviewer_username
@@ -337,7 +327,6 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option9':
-            console.log("option9 was selected and submitted")
             query = `SELECT user_id, title
                     FROM items i
                     WHERE NOT EXISTS (
@@ -358,7 +347,6 @@ app.get('/filter', (req, res) => {
             } )
             break;
           case 'option10':
-            console.log("option10 was selected and submitted")
             query = `SELECT DISTINCT r1.reviewer_username AS user_A, r2.reviewer_username AS user_B
                     FROM reviews r1
                     JOIN reviews r2
