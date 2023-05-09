@@ -53,7 +53,7 @@ function GridCards() {
     }
 
     return (
-        <Row xs={1} md={2} className="g-4">
+        <Row xs={1} md={2} lg={3} className="g-4">
             {data ? (
                 data.length > 0 ? (
                     data.map((item) => (

@@ -10,3 +10,5 @@ npm install jsonwebtoken
 phase 1: https://youtu.be/lV4pfaygBQQ
 
 phase 2: https://youtu.be/_4WYf-CDgAc
+
+phase 3: https://youtu.be/JvBZHLVymYI

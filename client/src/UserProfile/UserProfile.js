@@ -48,7 +48,7 @@ function UserProfile(){
         <div>
             <NavbarStyle></NavbarStyle>
             <h1>username: {user}</h1>
-            <Row xs={1} md={2} className="g-4">
+            <Row xs={1} md={2} lg={3} className="g-4">
                     {data ? (
                         data.length > 0 ? (
                             data.map((item) => (

@@ -160,6 +160,29 @@ app.get('/homepage', (req, res) => {
     });
 });
 
+// app.post('/profile', (req, res) => {
+//     const user = req.body.username;
+//     const profileUser = req.body.profileUser;
+
+//     console.log("user:", user)
+//     console.log("profile:", profileUser)
+
+//     if (user == profileUser) {
+//         return res.send({ message: 'you cannot follow yourself' }); // Return the response and exit the function
+//     }
+
+//     db.query(`INSERT INTO favorites (user_id, favorite_user_id, favorite)
+//         VALUES (?, ?, true)
+//         ON DUPLICATE KEY UPDATE favorite = NOT favorite;`, [user, profileUser],
+//         async (err, results) => {
+//             if (err) {
+//                 return res.send({ err: err }); // Return the error response and exit the function
+//             }
+
+//             return res.send({ message: 'user favorited' }); // Return the success response and exit the function
+//         })
+// })
+
 app.post('/profile', (req, res) => {
     const user = req.body.username;
     const profileUser = req.body.profileUser;
@@ -171,17 +194,40 @@ app.post('/profile', (req, res) => {
         return res.send({ message: 'you cannot follow yourself' }); // Return the response and exit the function
     }
 
-    db.query(`INSERT INTO favorites (user_id, favorite_user_id, favorite)
-        VALUES (?, ?, true)
-        ON DUPLICATE KEY UPDATE favorite = NOT favorite;`, [user, profileUser],
-        async (err, results) => {
-            if (err) {
-                return res.send({ err: err }); // Return the error response and exit the function
-            }
+    db.query(`
+        SELECT favorite FROM favorites WHERE user_id = ? AND favorite_user_id = ?`, [user, profileUser], (err, results) => {
+        if (err) {
+        return res.send({ err: err }); // Return the error response and exit the function
+        }
 
-            return res.send({ message: 'user favorited' }); // Return the success response and exit the function
-        })
+        const favorite = results.length > 0 ? results[0].favorite : false;
+        const toggleFavorite = !favorite;
+
+        db.query(`
+        INSERT INTO favorites (user_id, favorite_user_id, favorite)
+        VALUES (?, ?, ?)
+        ON DUPLICATE KEY UPDATE favorite = ?
+        `, [user, profileUser, toggleFavorite, toggleFavorite], (err, results) => {
+        if (err) {
+            return res.send({ err: err }); // Return the error response and exit the function
+        }
+
+        const message = toggleFavorite ? 'user favorited' : 'user unfavorited';
+        return res.send({ message: message }); // Return the success response and exit the function
+        });
+    });
+});
+
+app.get('/profile', (req,res)=>{
+    const profile = req.query.profile;
+    // console.log(username)
+    db.query(`SELECT * FROM items WHERE user_id= '${profile}' `, (err, results) => {
+        if(err) console.log(err)
+
+        res.send({data: results})
+    })
 })
+  
 
 app.get('/filter', (req, res) => {
     const filteredOption = req.query.filteredOption;
@@ -395,8 +441,16 @@ app.get('/users', (req, res)=>{
 
 app.get('/userprofile', (req,res)=>{
     const username = req.query.username;
-    console.log(username)
+    // console.log(username)
     db.query(`SELECT * FROM items WHERE user_id= '${username}' `, (err, results) => {
+        if(err) console.log(err)
+
+        res.send({data: results})
+    })
+})
+
+app.get('/randomItem', (req,res)=>{
+    db.query(`SELECT * FROM items ORDER BY RAND() LIMIT 6 `, (err, results) => {
         if(err) console.log(err)
 
         res.send({data: results})
