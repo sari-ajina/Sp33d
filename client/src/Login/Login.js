@@ -28,10 +28,13 @@ function Login() {
 
                 }else{
                     setLogged(true)
-                    console.log("logged in as " + response.data.result)
+                    // console.log("logged in as " + response.data.result)
                     // setLoginStatus("logged in as " + response.data.result)
                     //set the usernamem val in the UserContext
-                    setUsername(usernameInput);
+                    localStorage.setItem("token", response.data.token)
+                    localStorage.setItem("username", response.data.result)
+                    const user = localStorage.getItem("username")
+                    setUsername(user);
                 }
         });
     }
@@ -70,7 +73,7 @@ function Login() {
                 ></input>
             </div>
             <Link to='/homepage' onClick={handleLinkClick}>
-                <button className="button" onClick={login}>Login</button>
+                <button className="log-button" onClick={login}>Login</button>
             </Link>
             <div>
                 <Link to='/'>

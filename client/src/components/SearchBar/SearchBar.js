@@ -34,7 +34,7 @@ function SearchBar(){
 
     return (
         <form onSubmit={(e)=> {e.preventDefault(); search(); }}>
-            <Form>
+            <Form className='d-flex'>
                 <Form.Control 
                     // className='search'
                     type='search'
@@ -45,7 +45,7 @@ function SearchBar(){
                 >
                 </Form.Control>
                 <Link onClick={handleLinkClick} to='/searchedItem'>            
-                    <Button variant='outline-success' className='button' onClick={search} type='submit'>Search</Button>
+                    <Button variant='outline-success' onClick={search} type='submit'>Search</Button>
                 </Link>
             </Form>
         </form>

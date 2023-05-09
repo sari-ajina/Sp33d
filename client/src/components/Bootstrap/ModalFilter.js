@@ -14,6 +14,8 @@ function ModalFilter(props) {
   const [userX, setUserX] = useState('');
   const [userY, setUserY] = useState('');
 
+  const [users, setUsers] = useState([]);
+
   const {selectedFilter, setSelectedFilter, setData} = useContext(UserContext);
 
   const handleCategory1Change = (event) => {
@@ -36,6 +38,11 @@ function ModalFilter(props) {
     setUserY(event.target.value);
   };
 
+  Axios.get(`http://localhost:3001/users`).then((response) => {
+    const usernames = response.data.data.map((e) => e.username);
+    setUsers(usernames);
+  });
+
   const handleSubmit = async (event) => {
     if (selectedFilter) {
       console.log(selectedFilter)
@@ -46,58 +53,31 @@ function ModalFilter(props) {
               setData(response.data.data)
               break;
             case 'option2':
-              let dataToSet2 = {
-                Title: ''
-              }
               setData(response.data.data)
               break;
             case 'option3':
-              let dataToSet3 = {
-                Title: ''
-              }
               setData(response.data.data)
               // setData(response.data.data)
               break;
             case 'option4':
-              let dataToSet4 = {
-                Title: ''
-              }
               setData(response.data.data)
               break;
             case 'option5':
-              let dataToSet5 = {
-                Title: ''
-              }
               setData(response.data.data)
               break;
             case 'option6':
-              let dataToSet6 = {
-                Title: ''
-              }
               setData(response.data.data)
               break;
             case 'option7':
-              let dataToSet7 = {
-                Title: ''
-              }
               setData(response.data.data)
               break;
             case 'option8':
-              let dataToSet8 = {
-                Title: ''
-              }
               setData(response.data.data)
               break;
             case 'option9':
-              let dataToSet9 = {
-                Title: ''
-              }
               setData(response.data.data)
               break;
             case 'option10':
-              let dataToSet10 = {
-                Title: ''
-              }
               setData(response.data.data)
               break;
           
@@ -191,8 +171,20 @@ function ModalFilter(props) {
             checked={selectedFilter === 'option5'}
             onChange={(e) => setSelectedFilter(e.target.id)}
           />
-          <Form.Control id='users' type="text" placeholder="Enter User X" value={userX} onChange={handleUserXChange} required/> 
-          <Form.Control id='users' type="text" placeholder="Enter User Y" value={userY} onChange={handleUserYChange} required/>
+          {/* <Form.Control id='users' type="text" placeholder="Enter User X" value={userX} onChange={handleUserXChange} required/>  */}
+          <select id='category-select' value={userX} onChange={handleUserXChange} required>
+            <option value="-1"></option>
+            {users.map((usern) => (
+              <option key={usern}>{usern}</option>
+            ))}
+          </select>
+          <select id='category-select' value={userY} onChange={handleUserYChange} required>
+            <option value="-1"></option>
+            {users.map((usern) => (
+              <option key={usern}>{usern}</option>
+            ))}
+          </select>
+          {/* <Form.Control id='users' type="text" placeholder="Enter User Y" value={userY} onChange={handleUserYChange} required/> */}
         </Form.Group>
 
         <Form.Group>

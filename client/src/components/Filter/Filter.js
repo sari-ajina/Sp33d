@@ -146,13 +146,6 @@ function Filter(props){
             break;
     }
 
-    // return (
-    //     <ul>
-    //         {Object.values(data).map((value, index) => (
-    //         <li key={index}>{value}</li>
-    //         ))}
-    //     </ul>
-    //   );
 }
 
 export default Filter;

@@ -101,6 +101,13 @@ app.post('/login', (req, res) => {
                     const token = jwt.sign({ email: result[0].email }, JWT_SECRET); 
                     // Return the JSON Web Token to the client
                     res.json({ token, result: username }); 
+                    if (typeof localStorage !== 'undefined') {
+                        // localStorage is supported, proceed with your code
+                        localStorage.setItem({token, result: username});
+                    } else {
+                        console.log("error not supported")
+                    // localStorage is not supported, find an alternative way to store your data
+                    }
                 } else { 
                     // res.status(401).json({ message: 'Incorrect password!' }); 
                     res.send({message: "Incorrect Password!"})
@@ -376,6 +383,24 @@ app.get('/filter', (req, res) => {
             break;
         }
     }
+})
+
+app.get('/users', (req, res)=>{
+    db.query(`SELECT username FROM users`, (err, results) => {
+        if(err) console.log(err)
+
+        res.send({data: results})
+    })
+})
+
+app.get('/userprofile', (req,res)=>{
+    const username = req.query.username;
+    console.log(username)
+    db.query(`SELECT * FROM items WHERE user_id= '${username}' `, (err, results) => {
+        if(err) console.log(err)
+
+        res.send({data: results})
+    })
 })
 
 //search page

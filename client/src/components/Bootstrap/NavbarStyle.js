@@ -6,8 +6,17 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import SearchBar from '../SearchBar/SearchBar';
+import ModalFilter from './ModalFilter';
+import React from 'react';
+import { useState } from 'react';
 
 function NavbarStyle() {
+    const [modalShow, setModalShow] = useState(false);
+
+    const handleLogout = () => {
+      localStorage.clear();
+    }
+
   return (
     <>
       {['sm' ].map((expand) => (
@@ -22,22 +31,35 @@ function NavbarStyle() {
             >
               <Offcanvas.Header closeButton>
                 <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                  Offcanvas
+                  SP33D
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
+                  <Nav.Link onClick={handleLogout} href="/login">Log out</Nav.Link>
+                </Nav>
+                <Nav className="justify-content-end pe-3">
                   <Nav.Link href="/userprofile">Profile</Nav.Link>
                 </Nav>
+                <Nav className="justify-content-end  pe-3">
+                  <Nav.Link href="/items">Add Item</Nav.Link>
+                </Nav>
                 <Form className="d-flex">
-                  {/* <Form.Control
+                    {/* <Form.Control
                     type="search"
                     placeholder="Search"
                     className="me-2"
                     aria-label="Search"
-                  /> */}
-                  <SearchBar/>
-                  {/* <Button variant="outline-success">Search</Button> */}
+                    /> */}
+                    <SearchBar/>
+                    <Button onClick={() => setModalShow(true)}>
+                        Filter 
+                    </Button>
+                    <ModalFilter
+                        show={modalShow}
+                        onHide={() => setModalShow(false)}
+                    />
+                    {/* <Button variant="outline-success">Search</Button> */}
                 </Form>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

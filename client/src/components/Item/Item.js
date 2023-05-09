@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Axios from 'axios';
 import UserContext from '../../Contexts/UserContext';
+import NavbarStyle from '../Bootstrap/NavbarStyle';
 
 function Item() {
   const [title, setTitle] = useState('');
@@ -8,9 +9,17 @@ function Item() {
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState('');
   const [userId, setUserId] = useState('');
-  const {username} = useContext(UserContext);
+  // const {username} = useContext(UserContext);
 
   const [itemStatus, setItemStatus] = useState("");
+  const user = localStorage.getItem("username");
+
+
+  useEffect(() =>{
+    // const user = localStorage.getItem("username");
+    console.log(user)
+    // console.log(username)
+  })
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,7 +29,7 @@ function Item() {
       description: description,
       category: category,
       price: price, 
-      userId: username //retrieving the username val
+      userId: user //retrieving the username val
     };
 
     Axios.post('http://localhost:3001/items', newItem).then(
@@ -39,7 +48,8 @@ function Item() {
 
   return (
     <div>
-      <h1>Logged in as: {username}</h1>
+      <NavbarStyle></NavbarStyle>
+      <h1>Logged in as: {user}</h1>
       <h2>Insert Item</h2>
       <form onSubmit={handleSubmit}>
         <div>

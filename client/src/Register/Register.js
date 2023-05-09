@@ -117,7 +117,7 @@ function Register() {
                 </input>
             </div>
             <Link to='/login' onClick={handleLinkClick}>
-                <button className={"button"} onClick={register}>Continue</button>
+                <button className="reg-button" onClick={register}>Continue</button>
                 <br/>
             </Link>
             <Link to='/login'>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './Homepage.css';
 import Axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,10 +8,17 @@ import Button from 'react-bootstrap/Button';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Filter from '../components/Filter/Filter';
 import NavbarStyle from '../components/Bootstrap/NavbarStyle';
+import UserContext from '../Contexts/UserContext';
 
 function Homepage() {
     const [tableName, setTableName] = useState("");
     const [modalShow, setModalShow] = useState(false);
+    const user = localStorage.getItem("username");
+
+
+    useEffect(() =>{
+        console.log(user)
+    })
 
     // const navigate = useNavigate();
     
@@ -35,7 +42,7 @@ function Homepage() {
     return (
     <div className='contained'>
         <NavbarStyle></NavbarStyle>
-        <h3>Welcome to your home page!</h3>
+        <h3>Welcome to your home page! {user}</h3>
         {/* <input 
             type="text" 
             placeholder='insert a name' 
@@ -47,18 +54,18 @@ function Homepage() {
         
         {/* <SearchBar/> */}
 
-        <Button onClick={() => setModalShow(true)}>
+        {/* <Button onClick={() => setModalShow(true)}>
             Filter 
         </Button>
 
         <ModalFilter
             show={modalShow}
             onHide={() => setModalShow(false)}
-        />
-
+        /> */}
+{/* 
         <Link to='/items'>
             <button>Add an Item</button>
-        </Link>
+        </Link> */}
 
         <Filter></Filter>
         {/* <h1>{status}</h1> */}
