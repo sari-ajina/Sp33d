@@ -28,7 +28,7 @@ function Homepage() {
     return (
     <div className='contained'>
         <NavbarStyle></NavbarStyle>
-        <h3>Welcome to your home page! {user}</h3>
+        <h3>Welcome to your home page {user}</h3>
 
         <Filter></Filter>
         <RandomItem/>
