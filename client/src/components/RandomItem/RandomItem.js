@@ -11,7 +11,10 @@ import { Link } from "react-router-dom";
 function RandomItem(){
 
     const [data, setData] = useState([]);
-    const { setTitle, title, category, setItemId, profileUser, setProfileUser} = useContext(UserContext);
+    const { setTitle, title, setItemId, profileUser, setProfileUser} = useContext(UserContext);
+    
+    const [nav, setNav] = useState("");
+    const username = localStorage.getItem("username");
 
     useEffect(()=>{
         Axios.get("http://localhost:3001/randomItem",)
@@ -33,6 +36,11 @@ function RandomItem(){
 
     const handleUserClick = (test) =>{
         setProfileUser(test);
+        if(profileUser !== username){
+            setNav('/profile')
+        }else{
+            setNav('/useprofile')
+        }
         console.log(profileUser);
     }
 
@@ -44,6 +52,10 @@ function RandomItem(){
     }
 
     const linkUser = (event) => {
+        console.log("username", username)
+        console.log("profileUser", profileUser)
+        console.log("nav", nav)
+
         if (profileUser == null || profileUser == "") {
             event.preventDefault(); // stop navigation to /homepage page
             // alert('Please Enter an Existing Username and Password');
@@ -51,7 +63,7 @@ function RandomItem(){
     }
 
     return(
-        <Row xs={1} md={2} lg={3} className="g-4">
+        <Row xs={1} md={2} lg={3} style={{margin: '12px'}} className="g-4">
             {data ? (
                 data.length > 0 ? (
                     data.map((item) => (
@@ -82,7 +94,7 @@ function RandomItem(){
                                         Price: {item.price}
                                     </Card.Text>
                                     <Card.Text>
-                                        <Link onClick={linkUser} to="/profile">
+                                        <Link onClick={linkUser} to={nav}>
                                             <a onClick={() => {
                                                 handleUserClick(item.user_id);
                                             }}

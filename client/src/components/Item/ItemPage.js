@@ -1,16 +1,26 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Axios from 'axios';
 import UserContext from '../../Contexts/UserContext';
+import NavbarStyle from '../Bootstrap/NavbarStyle';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Button from 'react-bootstrap/Button';
+import './ItemPage.css'
 
 function ItemPage() {
     const [data, setData] = useState([]);
-    const { title, username} = useContext(UserContext);
+    const { title} = useContext(UserContext);
     const [description, setDescription] = useState();
     const [itemId1, setItemId1] = useState();
     // const [reviewer_username, setReviewerUsername] = useState();
     const [rating, setRating] = useState();
     const [reviewStatus, setReviewStatus] = useState("");
     const {itemId} = useContext(UserContext);
+
+    const username = localStorage.getItem("username");
 
     useEffect(() => {
         console.log(title)
@@ -64,38 +74,82 @@ function ItemPage() {
     }
 
     return (
-        <div>
-            {Array.isArray(data) ? (
-                data.map((item) => (
-                    <div className="grid">
-                        <td className="col-1" key={item.id}>
-                            
-                            <tr id="main">Title: {item.title}</tr>
-                            <tr id="main">Description: {item.description}</tr>
-                            <tr id="main">Category: {item.category}</tr>
-                            <tr id="main">Price: {item.price}</tr>
-                            <tr id="sub">Created: {item.created_at.slice(0,10)}</tr>
-                            <tr id="sub">User: {item.user_id}</tr>
-                        </td>
-                    </div>
-                ))
-            ) : (
-                <p>No data available</p>
-            )}
-            <form onSubmit={postReview}>
-                <h1>Review the Item:</h1>
-                <select onChange={(e)=>{setRating(e.target.value)}} required>
-                    <option></option>
-                    <option value="excellent">excellent</option>
-                    <option value="good">good</option>
-                    <option value="fair">fair</option>
-                    <option value="poor">poor</option>
-                </select>
-                <br></br>
-                <textarea placeholder='write a review here...' value={description} onChange={e => setDescription(e.target.value)} required />
-                <br></br>
-                <button type="submit">Submit Review</button>
-            </form>
+        <div className='center-text'>
+            <NavbarStyle/>
+            <Row xs={1} md={1} lg={2} style={{margin: "12px"}} className="g-4">
+                <Col>
+                    {Array.isArray(data) ? (
+                        data.map((item) => (
+                            <Card border='info'>
+                                <Card.Body>
+                                    <Card.Title>
+                                        <Card.Header>
+                                            Title: {item.title}
+                                        </Card.Header>
+                                    </Card.Title>
+                                    <Card.Text>
+                                        Description: {item.description}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Category: {item.category}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        Price: {item.price}
+                                    </Card.Text>
+                                    <Card.Text>
+                                        User: {item.user_id}
+                                    </Card.Text>
+                                    <Card.Footer>
+                                        <small className="text-muted">
+                                            Created: {item.created_at.slice(0,10)}
+                                        </small>
+                                    </Card.Footer>
+                                </Card.Body>
+                            </Card>
+                        ))
+                    ) : (
+                        <p>No data available</p>
+                    )}
+                </Col>
+                <Col>
+                    <Card border='success'>
+                        <Card.Body>
+                            <Form onSubmit={postReview}>
+                                <Card.Title>
+                                    <Card.Header>
+                                        Review the Item:
+                                    </Card.Header>
+                                </Card.Title>
+                                <Card.Text>
+                                    <Form.Select onChange={(e)=>{setRating(e.target.value)}} required>
+                                        <option></option>
+                                        <option value="excellent">excellent</option>
+                                        <option value="good">good</option>
+                                        <option value="fair">fair</option>
+                                        <option value="poor">poor</option>
+                                    </Form.Select>
+                                    <br></br>
+                                    <FloatingLabel 
+                                        value={description} 
+                                        onChange={e => setDescription(e.target.value)} required
+                                        controlId="floatingTextarea2" 
+                                        label="Review"
+                                    >
+                                        <Form.Control
+                                        as="textarea"
+                                        placeholder="Leave a review here"
+                                        style={{ height: '100px' }}
+                                        />
+                                    </FloatingLabel>
+                                </Card.Text>
+                                <Card.Footer>
+                                    <Button type="submit" variant="outline-success">Submit Review</Button>
+                                </Card.Footer>
+                            </Form>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
         </div>
     );
 }
