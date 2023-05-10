@@ -56,37 +56,6 @@ function Item() {
     <div>
       <NavbarStyle></NavbarStyle>
       <h1>Logged in as: {user}</h1>
-      {/* <h2>Insert Item</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Title:</label>
-          <br></br>
-          <input type="text" value={title} onChange={e => setTitle(e.target.value)} required />
-        </div>
-        <div>
-          <label>Description:</label>
-          <br></br>
-          <textarea value={description} onChange={e => setDescription(e.target.value)} required />
-        </div>
-        <div>
-          <label>Category:</label>
-          <br></br>
-          <select onChange={e => setCategory(e.target.value)} required>
-            <option value="-1"></option>
-            <option value="Sedan">Sedan</option>
-            <option value="SUV">SUV</option>
-            <option value="Convertible">Convertible</option>
-            <option value="Sport">Sport</option>
-            <option value="Retro">Retro</option>
-          </select>
-        </div>
-        <div>
-          <label>Price:</label>
-          <br></br>
-          <input type="number" value={price} onChange={e => setPrice(e.target.value)} required />
-        </div>
-        <button type="submit">Submit</button>
-      </form> */}
       <Row sm={1} md={1} lg={1} style={{margin: "12px"}} className="g-4">
         <Col>
           <Card border='success'>
@@ -147,7 +116,7 @@ function Item() {
                         </FloatingLabel>
                       </Card.Text>
                       <Card.Footer>
-                          <Button type="submit" variant="outline-success">Submit Review</Button>
+                          <Button type="submit" variant="outline-success">Submit Item</Button>
                       </Card.Footer>
                   </Form>
               </Card.Body>
