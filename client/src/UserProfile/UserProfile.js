@@ -15,6 +15,14 @@ function UserProfile(){
     const [title, setTitle] = useState();
     const [itemId, setItemId] = useState();
 
+    useEffect(()=>{
+        Axios.get(`http://localhost:3001/userprofile`, {params: {username: user}}).then(
+            (response) =>{
+                setData(response.data.data);
+            }
+        )
+    }, []);
+
     const handleLinkClick = (event) => {
         if (title == null || title == "") {
             event.preventDefault(); // stop navigation to /homepage page
@@ -26,14 +34,6 @@ function UserProfile(){
         setTitle(test);
         console.log(title);
     }
-
-    useEffect(()=>{
-        Axios.get(`http://localhost:3001/userprofile`, {params: {username: user}}).then(
-            (response) =>{
-                setData(response.data.data);
-            }
-        )
-    })
 
     // const retrieveItems = () => {
     //     Axios.get(`http://localhost:3001/userprofile`, {params: {username: user}}).then(
@@ -58,15 +58,7 @@ function UserProfile(){
                                         <Card.Body>
                                             <Card.Title>
                                                 <Card.Header>
-                                                    <Link onClick={handleLinkClick} to="/itemPage">
-                                                        <a onClick={() => {
-                                                            handleTitleClick(item.title);
-                                                            setItemId(item.id);
-                                                        }}
-                                                        >
-                                                            Title: {item.title}
-                                                        </a>
-                                                    </Link>
+                                                    Title: {item.title}
                                                 </Card.Header>
                                             </Card.Title>
                                             <Card.Text>

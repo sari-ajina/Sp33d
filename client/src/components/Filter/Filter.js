@@ -19,7 +19,7 @@ function Filter(props){
                       <p>{item.description}</p>
                       <p>{item.category}</p>
                       <p>{item.price}</p>
-                      <p>{item.created_at.slice(0,10)}</p>
+                      <p>{item.created_at}</p>
                       <p>{item.user_id}</p>
                     </div>
                   ))}
@@ -47,7 +47,7 @@ function Filter(props){
                       <p>Description: {item.description}</p>
                       <p>Category: {item.category}</p>
                       <p>Price: {item.price}</p>
-                      <p>Created: {item.created_at.slice(0,10)}</p>
+                      <p>Created: {item.created_at}</p>
                       <p>{item.user_id}</p>
                     </div>
                   ))}
