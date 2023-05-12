@@ -265,6 +265,9 @@ app.get('/filter', (req, res) => {
                     JOIN items i2 ON u.username = i2.user_id AND LEFT(i1.created_at, 9) = LEFT(i2.created_at, 9)
                     WHERE i1.category = '${category1}' AND i2.category = '${category2}'`;
 
+
+            console.log(category1);
+            console.log(category2);        
             db.query(query, (error, results) => {
                 if (error) {
                     console.error(error);
