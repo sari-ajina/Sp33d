@@ -41,7 +41,11 @@ function Register() {
     }
 
     return (
-    <div>
+        <html>
+            <body>
+
+            
+    <div className="body-reg">
         <div className="container">
             <h2>
                 Register Here!
@@ -49,6 +53,7 @@ function Register() {
             <div>
                 Enter First and Last Name: <br/>
                 <input 
+                    className="input-reg"
                     type="text" 
                     placeholder="i.e. John"
                     onChange={((e)=>
@@ -58,7 +63,8 @@ function Register() {
                 >
                 </input>
                 <br/>
-                <input 
+                <input
+                    className="input-reg" 
                     type="text" 
                     placeholder="i.e. Doe"
                     onChange={((e)=>
@@ -71,6 +77,7 @@ function Register() {
             <div>
                 Enter Username: <br/>
                 <input 
+                    className="input-reg"
                     type="text" 
                     placeholder="i.e. johndoe"
                     onChange={((e)=>
@@ -83,6 +90,7 @@ function Register() {
             <div>
                 Enter Email: <br/>
                 <input 
+                    className="input-reg"
                     placeholder="i.e. johndoe@email.com"
                     type="text" 
                     onChange={((e)=>
@@ -94,7 +102,8 @@ function Register() {
             </div>
             <div>
                 Enter Password: <br/>
-                <input 
+                <input
+                    className="input-reg" 
                     placeholder="password"
                     type="text" 
                     onChange={((e)=>
@@ -107,6 +116,7 @@ function Register() {
             <div>
                 Confirm Password: <br/>
                 <input 
+                    className="input-reg"
                     placeholder="input the same password"
                     type="text" 
                     onChange={((e)=>
@@ -125,6 +135,9 @@ function Register() {
             </Link>
         </div>
     </div>
+    </body>
+    </html>
+    
     );
 }
 
