@@ -55,6 +55,7 @@ function Login() {
             <div>
                 Enter Username: <br/>
                 <input
+                    className="input-reg"
                     placeholder='enter username'
                     type="text"
                     onChange={(e)=>{
@@ -65,6 +66,7 @@ function Login() {
             <div>
                 Enter Password: <br/>
                 <input
+                    className="input-reg"
                     placeholder='enter password'
                     type="text"
                     onChange={(e)=>{
