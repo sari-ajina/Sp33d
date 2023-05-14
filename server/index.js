@@ -1,15 +1,12 @@
-/*
-Sari Ajina
-Charles Cabugnason
-Group 43
-*/
 const express = require('express'); 
 const cors = require('cors'); 
 const mysql = require('mysql'); 
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv') ;
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 //creating a express.js application
 const app = express(); 
@@ -22,17 +19,27 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //parse JSON request bodies
 app.use(bodyParser.json()); 
 
-dotenv.config();
+const JWT_SECRET = process.env.JWT_SECRET;
+const dbHost = process.env.DB_HOST;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+const dbDatabase = process.env.DB_DATABASE;
 
-const JWT_SECRET="hasiduhfiuheoiuch1hh2h3dn738ycrb7832y81bc03";
-
-//creating a MYSQL connection
+// creating a MYSQL connection
 const db = mysql.createConnection({ 
-  host: 'localhost', 
-  user: 'root', 
-  password: 'password', 
-  database: 'sp33d_db' 
+    host: dbHost, 
+    user: dbUser, 
+    password: dbPassword, 
+    database: dbDatabase 
 });
+
+
+// const db = mysql.createConnection({ 
+//   host: "localhost", 
+//   user: "root", 
+//   password: "password", 
+//   database: "sp33d_db" 
+// });
 
 //connecting to mysql db
 db.connect((err) => { 
