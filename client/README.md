@@ -70,10 +70,11 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 ### `npm installs`
 
-npm install axios
-npm install react-bootstrap bootstrap
+npm install axios react-bootstrap bootstrap
 
 ### `videos`
 phase 1: https://youtu.be/lV4pfaygBQQ
 
 phase 2: https://youtu.be/_4WYf-CDgAc
+
+phase 3: https://youtu.be/JvBZHLVymYI

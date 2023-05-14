@@ -1,10 +1,6 @@
 ### `npm installs`
-npm install express 
-npm install mysql 
-npm install bcrypt 
-npm install cors 
+npm install express mysql bcrypt cors jsonwebtoken
 npm install nodemon --save-dev 
-npm install jsonwebtoken
 
 ### `videos`
 phase 1: https://youtu.be/lV4pfaygBQQ
