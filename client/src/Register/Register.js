@@ -48,6 +48,9 @@ function Register() {
     <div className="body-reg">
         <div className="container">
             <h2>
+                SP33D
+            </h2>
+            <h2>
                 Register Here!
             </h2>
             <div>
