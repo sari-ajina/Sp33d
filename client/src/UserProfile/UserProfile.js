@@ -47,7 +47,7 @@ function UserProfile(){
     return(
         <div>
             <NavbarStyle></NavbarStyle>
-            <h1>username: {user}</h1>
+            <h1 className='welcome'>username: {user}</h1>
             <Row xs={1} md={2} lg={3} style={{margin: "12px"}} className="g-4">
                     {data ? (
                         data.length > 0 ? (

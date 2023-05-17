@@ -55,7 +55,7 @@ function Item() {
   return (
     <div>
       <NavbarStyle></NavbarStyle>
-      <h1>Logged in as: {user}</h1>
+      <h1 className='welcome'>Logged in as: {user}</h1>
       <Row sm={1} md={1} lg={1} style={{margin: "12px"}} className="g-4">
         <Col>
           <Card border='success'>
@@ -123,7 +123,7 @@ function Item() {
           </Card>
         </Col>
       </Row>
-      <h1>{itemStatus}</h1>
+      <h1 className='welcome'>{itemStatus}</h1>
     </div>
   );
 }

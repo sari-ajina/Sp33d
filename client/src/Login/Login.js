@@ -17,6 +17,7 @@ function Login() {
 
     //calls an axios post method to send data to the server side
     const login = ()=>{
+        // Axios.post('http://localhost:3001/login', 
         Axios.post('http://localhost:3001/login', 
         {username: usernameInput, password: password}).then(
             (response) =>{
@@ -71,7 +72,7 @@ function Login() {
                 <input
                     className="input-reg"
                     placeholder='enter password'
-                    type="text"
+                    type="password"
                     onChange={(e)=>{
                         setPassword(e.target.value)
                     }}

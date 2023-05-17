@@ -82,6 +82,7 @@ app.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
+    console.log(username)
     db.query(
         "SELECT username, password FROM users WHERE username = ?", 
         [username],
@@ -446,7 +447,7 @@ app.get('/userprofile', (req,res)=>{
 })
 
 app.get('/randomItem', (req,res)=>{
-    db.query(`SELECT * FROM items ORDER BY RAND() LIMIT 6 `, (err, results) => {
+    db.query(`SELECT * FROM items ORDER BY RAND() LIMIT 9 `, (err, results) => {
         if(err) console.log(err)
 
         res.send({data: results})

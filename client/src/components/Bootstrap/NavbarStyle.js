@@ -22,7 +22,7 @@ function NavbarStyle() {
       {['sm' ].map((expand) => (
         <Navbar key={expand} bg="light" expand={expand} className="mb-3">
           <Container fluid>
-            <Navbar.Brand href="/homepage">SP33D</Navbar.Brand>
+            <Navbar.Brand className='title' href="/homepage">SP33D</Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${expand}`}
@@ -52,13 +52,13 @@ function NavbarStyle() {
                     aria-label="Search"
                     /> */}
                     <SearchBar/>
-                    <Button onClick={() => setModalShow(true)}>
+                    {/* <Button onClick={() => setModalShow(true)}>
                         Filter 
                     </Button>
                     <ModalFilter
                         show={modalShow}
                         onHide={() => setModalShow(false)}
-                    />
+                    /> */}
                     {/* <Button variant="outline-success">Search</Button> */}
                 </Form>
               </Offcanvas.Body>

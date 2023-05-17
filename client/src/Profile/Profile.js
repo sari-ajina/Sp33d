@@ -7,6 +7,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { Link } from "react-router-dom";
+import './Profile.css'
 
 function Profile(){
     const {profileUser} = useContext(UserContext);
@@ -67,9 +68,11 @@ function Profile(){
     return(
         <div>
             <NavbarStyle/>
-            <h1>username: {profileUser}</h1>
-            <button onClick={handleFavoriteClick}>Favorite</button>
-            <h3>{favStatus}</h3>
+            <h1 className='welcome'>username: {profileUser}</h1>
+            <center>
+                <button className='fav-button' onClick={handleFavoriteClick}>Favorite</button>
+            </center>
+            <h3 className='welcome color'>{favStatus}</h3>
             <Row xs={1} md={2} lg={3} style={{margin: "12px"}} className="g-4">
                 {data ? (
                     data.length > 0 ? (

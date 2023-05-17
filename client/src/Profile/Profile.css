@@ -1,0 +1,28 @@
+.fav-button{
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.color{
+    margin-top: 10px;
+    color: red;
+    text-decoration: underline;
+}
+
+/* .fav-button{
+    display: block;
+    width: 50%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+} */
