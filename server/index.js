@@ -223,210 +223,210 @@ app.get('/profile', (req,res)=>{
 })
   
 
-app.get('/filter', (req, res) => {
-    const filteredOption = req.query.filteredOption;
-    console.log(filteredOption)
+// app.get('/filter', (req, res) => {
+//     const filteredOption = req.query.filteredOption;
+//     console.log(filteredOption)
 
-    if(filteredOption) {
+//     if(filteredOption) {
     
-        let query = '';
-        const category1 = req.query.category1;
-        const category2 = req.query.category2;
-        const option3 = req.query.option3;
-        const userX = req.query.userX;
-        const userY = req.query.userY;
+//         let query = '';
+//         const category1 = req.query.category1;
+//         const category2 = req.query.category2;
+//         const option3 = req.query.option3;
+//         const userX = req.query.userX;
+//         const userY = req.query.userY;
 
-        switch (filteredOption) {
-          case 'option1':
-            query = `SELECT * FROM items i1 WHERE price = (
-                    SELECT MAX(price) FROM items i2 WHERE i2.category = i1.category
-                    )`;
+//         switch (filteredOption) {
+//           case 'option1':
+//             query = `SELECT * FROM items i1 WHERE price = (
+//                     SELECT MAX(price) FROM items i2 WHERE i2.category = i1.category
+//                     )`;
 
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 1", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          case 'option2':
-            query = `SELECT DISTINCT u.username 
-                    FROM users u
-                    JOIN items i1 ON u.username = i1.user_id
-                    JOIN items i2 ON u.username = i2.user_id AND LEFT(i1.created_at, 9) = LEFT(i2.created_at, 9)
-                    WHERE i1.category = '${category1}' AND i2.category = '${category2}'`;
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 1", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           case 'option2':
+//             query = `SELECT DISTINCT u.username 
+//                     FROM users u
+//                     JOIN items i1 ON u.username = i1.user_id
+//                     JOIN items i2 ON u.username = i2.user_id AND LEFT(i1.created_at, 9) = LEFT(i2.created_at, 9)
+//                     WHERE i1.category = '${category1}' AND i2.category = '${category2}'`;
 
 
-            console.log(category1);
-            console.log(category2);        
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 2", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          case 'option3':
-            query = `SELECT i.id, i.user_id, i.description, i.title, i.category, i.price, i.created_at, u.username, COUNT(*) as num_reviews
-                    FROM items i JOIN users u ON i.user_id = u.username
-                    JOIN reviews r ON i.id = r.item_id
-                    WHERE u.username = '${option3}' AND r.rating IN ('Excellent', 'Good')
-                    GROUP BY i.id
-                    HAVING COUNT(*) = SUM(r.rating = 'Excellent' OR r.rating = 'Good')`;
+//             console.log(category1);
+//             console.log(category2);        
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 2", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           case 'option3':
+//             query = `SELECT i.id, i.user_id, i.description, i.title, i.category, i.price, i.created_at, u.username, COUNT(*) as num_reviews
+//                     FROM items i JOIN users u ON i.user_id = u.username
+//                     JOIN reviews r ON i.id = r.item_id
+//                     WHERE u.username = '${option3}' AND r.rating IN ('Excellent', 'Good')
+//                     GROUP BY i.id
+//                     HAVING COUNT(*) = SUM(r.rating = 'Excellent' OR r.rating = 'Good')`;
 
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 3", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          case 'option4':
-            query = `SELECT username, COUNT(*) AS num_items
-                    FROM users JOIN items ON username = items.user_id
-                    WHERE created_at >= '2020-05-01'
-                    GROUP BY username
-                    ORDER BY num_items DESC
-                    LIMIT 1`;
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 3", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           case 'option4':
+//             query = `SELECT username, COUNT(*) AS num_items
+//                     FROM users JOIN items ON username = items.user_id
+//                     WHERE created_at >= '2020-05-01'
+//                     GROUP BY username
+//                     ORDER BY num_items DESC
+//                     LIMIT 1`;
 
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 4", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          case 'option5':
-            query = `SELECT f1.favorite_user_id
-            FROM favorites f1
-            INNER JOIN favorites f2 ON f1.favorite_user_id = f2.favorite_user_id
-            WHERE f1.user_id = '${userX}' AND f2.user_id = '${userY}' AND f1.favorite = true AND f2.favorite = true;`;
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 4", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           case 'option5':
+//             query = `SELECT f1.favorite_user_id
+//             FROM favorites f1
+//             INNER JOIN favorites f2 ON f1.favorite_user_id = f2.favorite_user_id
+//             WHERE f1.user_id = '${userX}' AND f2.user_id = '${userY}' AND f1.favorite = true AND f2.favorite = true;`;
 
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 5", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          case 'option6':
-            query = `SELECT DISTINCT u.username FROM users u
-            JOIN items i ON u.username = i.user_id
-            JOIN reviews r ON i.id = r.item_id AND r.rating = 'Excellent'
-            GROUP BY u.username
-            HAVING COUNT(*) < 3;`;
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 5", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           case 'option6':
+//             query = `SELECT DISTINCT u.username FROM users u
+//             JOIN items i ON u.username = i.user_id
+//             JOIN reviews r ON i.id = r.item_id AND r.rating = 'Excellent'
+//             GROUP BY u.username
+//             HAVING COUNT(*) < 3;`;
 
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 6", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          case 'option7':
-            query = `SELECT DISTINCT reviewer_username
-                    FROM reviews
-                    WHERE reviewer_username NOT IN (
-                    SELECT reviewer_username
-                    FROM reviews
-                    WHERE rating = 'Poor'
-                    )`;
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 6", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           case 'option7':
+//             query = `SELECT DISTINCT reviewer_username
+//                     FROM reviews
+//                     WHERE reviewer_username NOT IN (
+//                     SELECT reviewer_username
+//                     FROM reviews
+//                     WHERE rating = 'Poor'
+//                     )`;
 
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 7", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          case 'option8':
-            query = `SELECT reviewer_username
-                    FROM reviews
-                    GROUP BY reviewer_username
-                    HAVING COUNT(*) = SUM(rating = 'Poor')`;
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 7", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           case 'option8':
+//             query = `SELECT reviewer_username
+//                     FROM reviews
+//                     GROUP BY reviewer_username
+//                     HAVING COUNT(*) = SUM(rating = 'Poor')`;
 
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 8", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          case 'option9':
-            query = `SELECT user_id, title
-                    FROM items i
-                    WHERE NOT EXISTS (
-                    SELECT *
-                    FROM reviews r
-                    WHERE r.item_id = i.id
-                    AND r.rating = 'Poor'
-                    )`;
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 8", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           case 'option9':
+//             query = `SELECT user_id, title
+//                     FROM items i
+//                     WHERE NOT EXISTS (
+//                     SELECT *
+//                     FROM reviews r
+//                     WHERE r.item_id = i.id
+//                     AND r.rating = 'Poor'
+//                     )`;
 
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 9", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          case 'option10':
-            query = `SELECT DISTINCT r1.reviewer_username AS user_A, r2.reviewer_username AS user_B
-                    FROM reviews r1
-                    JOIN reviews r2
-                    JOIN items i2 ON r1.item_id = i2.id
-                    JOIN items i1 ON r2.item_id = i1.id
-                    WHERE r1.reviewer_username < r2.reviewer_username
-                    AND r1.rating = 'excellent' AND r2.rating = 'excellent'
-                    AND NOT EXISTS (
-                    SELECT *
-                    FROM reviews r3
-                    WHERE r3.item_id = r1.item_id
-                    AND r3.reviewer_username IN (r1.reviewer_username, r2.reviewer_username)
-                    AND r3.rating != 'excellent'
-                    )`;
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 9", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           case 'option10':
+//             query = `SELECT DISTINCT r1.reviewer_username AS user_A, r2.reviewer_username AS user_B
+//                     FROM reviews r1
+//                     JOIN reviews r2
+//                     JOIN items i2 ON r1.item_id = i2.id
+//                     JOIN items i1 ON r2.item_id = i1.id
+//                     WHERE r1.reviewer_username < r2.reviewer_username
+//                     AND r1.rating = 'excellent' AND r2.rating = 'excellent'
+//                     AND NOT EXISTS (
+//                     SELECT *
+//                     FROM reviews r3
+//                     WHERE r3.item_id = r1.item_id
+//                     AND r3.reviewer_username IN (r1.reviewer_username, r2.reviewer_username)
+//                     AND r3.rating != 'excellent'
+//                     )`;
 
-            db.query(query, (error, results) => {
-                if (error) {
-                    console.error(error);
-                    // res.status(500).send('Server error');
-                } else {
-                    res.send({message: "Filtered Option 10", data: results});
-                    // console.log(results)
-                }
-            } )
-            break;
-          default:
-            break;
-        }
-    }
-})
+//             db.query(query, (error, results) => {
+//                 if (error) {
+//                     console.error(error);
+//                     // res.status(500).send('Server error');
+//                 } else {
+//                     res.send({message: "Filtered Option 10", data: results});
+//                     // console.log(results)
+//                 }
+//             } )
+//             break;
+//           default:
+//             break;
+//         }
+//     }
+// })
 
 app.get('/users', (req, res)=>{
     db.query(`SELECT username FROM users`, (err, results) => {
