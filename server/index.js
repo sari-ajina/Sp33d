@@ -62,7 +62,7 @@ app.post('/register', async (req, res) => {
         if (err){ 
             throw err;
         } 
-
+        //inserting new user
         db.query(
             "INSERT INTO users(username, password, firstName, lastName, email) VALUES (?,?,?,?,?)", 
             [username, hash, firstName, lastName, email],
@@ -84,6 +84,7 @@ app.post('/login', (req, res) => {
     const password = req.body.password;
 
     console.log(username)
+    //obtaining user for login
     db.query(
         "SELECT username, password FROM users WHERE username = ?", 
         [username],
@@ -131,6 +132,7 @@ app.post('/login', (req, res) => {
 
 app.post('/homepage', (req, res) => {
     const category = req.body.category
+    //obtaining data for searching category
     db.query(`SELECT title, description, category, price, created_at, user_id 
     FROM items WHERE category= '${category}'`,
     (err, results) => {
@@ -141,6 +143,7 @@ app.post('/homepage', (req, res) => {
     )
 });
 
+//testing search
 app.get('/homepage', (req, res) => {
     const category = req.query.category
     // console.log("category: ", category)
@@ -178,6 +181,7 @@ app.get('/homepage', (req, res) => {
 //         })
 // })
 
+//obtaining profile for users visiting
 app.post('/profile', (req, res) => {
     const user = req.body.username;
     const profileUser = req.body.profileUser;
@@ -189,6 +193,7 @@ app.post('/profile', (req, res) => {
         return res.send({ message: 'you cannot follow yourself' }); // Return the response and exit the function
     }
 
+    //favoriting users
     db.query(`
         SELECT favorite FROM favorites WHERE user_id = ? AND favorite_user_id = ?`, [user, profileUser], (err, results) => {
         if (err) {
@@ -198,6 +203,7 @@ app.post('/profile', (req, res) => {
         const favorite = results.length > 0 ? results[0].favorite : false;
         const toggleFavorite = !favorite;
 
+        //if first time favoriting insert into favorites table
         db.query(`
         INSERT INTO favorites (user_id, favorite_user_id, favorite)
         VALUES (?, ?, ?)
@@ -213,6 +219,7 @@ app.post('/profile', (req, res) => {
     });
 });
 
+//get data posted from user visited
 app.get('/profile', (req,res)=>{
     const profile = req.query.profile;
     // console.log(username)
@@ -429,6 +436,7 @@ app.get('/profile', (req,res)=>{
 //     }
 // })
 
+//obtaining username
 app.get('/users', (req, res)=>{
     db.query(`SELECT username FROM users`, (err, results) => {
         if(err) console.log(err)
@@ -437,6 +445,7 @@ app.get('/users', (req, res)=>{
     })
 })
 
+//obtaining logged in user profile data
 app.get('/userprofile', (req,res)=>{
     const username = req.query.username;
     // console.log(username)
@@ -447,6 +456,7 @@ app.get('/userprofile', (req,res)=>{
     })
 })
 
+//obtaining 9 random items from items table for the homepage
 app.get('/randomItem', (req,res)=>{
     db.query(`SELECT * FROM items ORDER BY RAND() LIMIT 9 `, (err, results) => {
         if(err) console.log(err)
@@ -525,7 +535,8 @@ app.post('/itemPage', (req, res) => {
               console.error(err);
               return res.send({ message: 'Failed to check item id.' });
             }
-    
+            
+            //checking if user exists
             db.query(
               'SELECT COUNT(*) as count FROM items WHERE user_id = ? AND id = ?',
               [reviewerUsername, itemId],
@@ -604,6 +615,7 @@ app.post('/items', (req, res) => {
     });
 });
 
+//get the port for the server
 const PORT = process.env.PORT || 3001; 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); 
   
